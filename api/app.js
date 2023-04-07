@@ -13,4 +13,8 @@ db.once('open', () => {
     console.log('Database connected');
 });
 
+import Student from "./models/student.js";
+import Teacher from "./models/teacher.js";
+import Batch from "./models/batch.js";
+
 const app = express();
