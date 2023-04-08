@@ -5,7 +5,7 @@ import Home from "./pages/home";
 
 function App() {
   return (
-    <div className="flex w-full min-h-screen bg-black h-fit">
+    <div className="flex w-full min-h-screen h-fit bg-black">
       <Sidebar pageWrapId={"page-wrap"} outerContainerId={"outer-container"} />
       <div className="w-full">
         <Navbar></Navbar>
