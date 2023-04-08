@@ -12,7 +12,6 @@ router.route('/')
     .get(catchAsync(student.index))
     .post(catchAsync(student.create))
 
-router.get('/new', student.newForm);
 
 router.route('/:id')
     //     //we'll check if the person sending the request is a teacher,CR, or the student himself
@@ -20,6 +19,5 @@ router.route('/:id')
     .put(catchAsync(student.update))
     .delete(catchAsync(student.deleteStudent))
 
-router.get('/:id/edit', catchAsync(student.editForm));
 
 export default router;
