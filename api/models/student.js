@@ -27,12 +27,16 @@ const StudentSchema = new Schema({
         required: true
     },
     courses: {
-        type: String,
+        type: [String],
         required: true
     },
     semester: {
         type: Number,
         required: true
+    },
+    isCR: {
+        type: Boolean,
+        default: false,
     }
 });
 
