@@ -16,5 +16,10 @@ db.once('open', () => {
 import Student from "./models/student.js";
 import Teacher from "./models/teacher.js";
 import Batch from "./models/batch.js";
+import Timetable from "./models/timeTable.js";
 
 const app = express();
+
+app.listen(3000, () => {
+    console.log('Serving on port 3000');
+})
