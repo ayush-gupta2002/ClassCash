@@ -13,6 +13,7 @@ import Batch from "./models/batch.js";
 import Timetable from "./models/timeTable.js";
 
 import studentRoutes from './routes/studentRoutes.js';
+import teacherRoutes from './routes/teacherRoutes.js';
 
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -29,6 +30,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/students', studentRoutes);
+app.use('/teachers', teacherRoutes);
 
 app.listen(3000, () => {
     console.log('Serving on port 3000');

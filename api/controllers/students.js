@@ -1,6 +1,3 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
 import Student from "../models/student.js";
 
 export const index = async (req, res) => {
@@ -18,7 +15,7 @@ export const show = async (req, res) => {
     const { id } = req.params;
     const student = await Student.findById(id);
     if (!student) {
-        res.status(404);
+        return res.status(404);
     }
     res.status(200).json(student);
 }
