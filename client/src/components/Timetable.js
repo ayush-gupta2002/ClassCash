@@ -17,15 +17,15 @@ function Timetable() {
     <div className="grid grid-cols-12 grid-rows-7 gap-1 mt-10 mx-auto">
       <div></div>
       {renderedSlots}
-      <TimetableDay day="Monday"></TimetableDay>
+      <TimetableDay day="Mon"></TimetableDay>
       {renderedSlots}
-      <TimetableDay day="Tuesday"></TimetableDay>
+      <TimetableDay day="Tues" color="bg-red-400"></TimetableDay>
       {renderedSlots}
-      <TimetableDay day="Wednesday"></TimetableDay>
+      <TimetableDay day="Wed" color="bg-green-400"></TimetableDay>
       {renderedSlots}
-      <TimetableDay day="Thursday"></TimetableDay>
+      <TimetableDay day="Thurs" color="bg-yellow-400"></TimetableDay>
       {renderedSlots}
-      <TimetableDay day="Friday"></TimetableDay>
+      <TimetableDay day="Fri" color="bg-pink-400"></TimetableDay>
       {renderedSlots}
     </div>
   );

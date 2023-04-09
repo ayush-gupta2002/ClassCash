@@ -16,34 +16,24 @@ import CustomizedLabel from "./CustomizedLabel";
 
 const data = [
   {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    name: "EE/85",
+    cash: 2400,
   },
   {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    name: "EE/86",
+    cash: 2210,
   },
   {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    name: "EE/102",
+    cash: 2010,
   },
   {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
+    name: "EE/110",
+    cash: 2000,
   },
   {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
+    name: "EE/20",
+    cash: 1500,
   },
 ];
 
@@ -74,9 +64,9 @@ function BarGraph() {
           bottom: 5,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
+        <CartesianGrid strokeDasharray="5 5" stroke="white" />
+        <XAxis dataKey="name" stroke="white" />
+        <YAxis dataKey="cash" stroke="white"></YAxis>
         <defs>
           {barColors.map((color, index) => (
             <linearGradient
@@ -93,10 +83,9 @@ function BarGraph() {
           ))}
         </defs>
         <Tooltip />
-        <Legend />
         <Bar
-          dataKey="pv"
-          fill="#8884d8"
+          dataKey="cash"
+          fill="white"
           barSize={40}
           label={<CustomizedLabel></CustomizedLabel>}
         >

@@ -1,4 +1,5 @@
 import "./App.css";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Home from "./pages/home";
@@ -10,6 +11,7 @@ function App() {
       <div className="w-full">
         <Navbar></Navbar>
         <Home></Home>
+        <Footer></Footer>
       </div>
     </div>
   );
