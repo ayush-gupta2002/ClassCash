@@ -1,6 +1,11 @@
-import { Schema, model } from 'mongoose';
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 
-const teacherSchema = new Schema({
+import { Schema, model } from 'mongoose';
+const passportLocalMongoose = require('passport-local-mongoose');
+
+
+const TeacherSchema = new Schema({
     firstName: {
         type: String,
         required: true
@@ -10,6 +15,11 @@ const teacherSchema = new Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
     branch: {
         type: String,
         enum: ['Biotechnology', 'Chemical Engineering', 'Civil Engineering', 'Computer Engineering', 'Electrical Engineering', 'Electronics and Communication Engineering', 'Engineering Physics', 'Environmental Engineering', 'Information Technology', 'Mathematics and Computing', 'Mechanical Engineering', 'Mechanical with Specialization in Automotive Engineering', 'Production and Industrial Engineering', 'Software Engineering'],
@@ -17,7 +27,7 @@ const teacherSchema = new Schema({
     }
 })
 
-teacherSchema.virtual('fullName').get(function () {
+TeacherSchema.virtual('fullName').get(function () {
     if (this.middleName) {
         return `${this.firstName} ${this.middleName} ${this.lastName}`;
     }
@@ -26,5 +36,6 @@ teacherSchema.virtual('fullName').get(function () {
     }
 })
 
-const Teacher = model('Teacher', teacherSchema);
-export default Teacher;
+// TeacherSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
+
+export default model('Teacher', TeacherSchema);

@@ -3,6 +3,7 @@ const require = createRequire(import.meta.url);
 
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 
 import catchAsync from "../utils/catchAsync.js";
 import * as student from '../controllers/students.js';
@@ -10,8 +11,9 @@ import * as student from '../controllers/students.js';
 router.route('/')
     //we'll check if the person sending the request is a teacher or CR
     .get(catchAsync(student.index))
-    .post(catchAsync(student.create))
+    // .post(catchAsync(student.register))
 
+// router.post('/login', passport.authenticate('local', { failureRedirect: '/', keepSessionInfo: true }), student.login);
 
 router.route('/:id')
     //     //we'll check if the person sending the request is a teacher,CR, or the student himself

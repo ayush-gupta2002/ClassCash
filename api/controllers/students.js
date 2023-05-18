@@ -5,11 +5,29 @@ export const index = async (req, res) => {
     res.status(200).json(students);
 }
 
-export const create = async (req, res) => {
-    const student = new Student(req.body);
-    await student.save();
-    res.status(201).json(student);
-}
+// export const register = async (req, res) => {
+//     try {
+//         const { password } = req.body;
+//         const student = new Student(req.body);
+//         const newStudent = await Student.register(student, password);
+//         req.login(newStudent, err => {
+//             if (err) {
+//                 return next(err);
+//             }
+//             res.redirect('/home');
+//         })
+//         res.status(201).json(newStudent);
+//     }
+//     catch (e) {
+//         res.send(e)
+//         // res.redirect('/students/register');
+//     }
+// }
+
+// export const login = (req, res) => {
+//     res.send('Student found');
+//     res.redirect('/home');
+// }
 
 export const show = async (req, res) => {
     const { id } = req.params;
