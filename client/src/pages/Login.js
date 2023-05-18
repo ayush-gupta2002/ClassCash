@@ -14,7 +14,6 @@ function Login() {
     "duration-500": true,
     "hover:scale-105": true,
     "duration-500": true,
-    "cursor-pointer": true,
   });
 
   console.log(email);
