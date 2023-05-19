@@ -5,6 +5,12 @@ export const index = async (req, res) => {
     res.status(200).json(teachers);
 }
 
+export const register = async (req, res) => {
+    const teacher = new Teacher(req.body);
+    await teacher.save();
+    res.status(201).json(teacher);
+}
+
 // export const register = async (req, res) => {
 //     try {
 //         const { password } = req.body;

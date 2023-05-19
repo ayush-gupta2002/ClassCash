@@ -11,10 +11,12 @@ import Student from "./models/student.js";
 import Teacher from "./models/teacher.js";
 import Batch from "./models/batch.js";
 import Timetable from "./models/timeTable.js";
+import User from "./models/user.js";
 
 import studentRoutes from './routes/studentRoutes.js';
 import teacherRoutes from './routes/teacherRoutes.js';
 import batchRoutes from './routes/batchRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 const session = require('express-session');
 const passport = require('passport');
@@ -47,17 +49,16 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
-// passport.use(new LocalStrategy({ usernameField: 'email' }, Student.authenticate(), Teacher.authenticate()));
-// passport.serializeUser(Student.serializeUser());
-// passport.deserializeUser(Student.deserializeUser());
+passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-// passport.use(new LocalStrategy({ usernameField: 'email' }, Teacher.authenticate()));
-// passport.serializeUser(Teacher.serializeUser());
-// passport.deserializeUser(Teacher.deserializeUser());
+
 
 app.use('/students', studentRoutes);
 app.use('/teachers', teacherRoutes);
 app.use('/batches', batchRoutes);
+app.use('/', userRoutes);
 
 app.get('/', (req, res) => {
     res.send('User not found');

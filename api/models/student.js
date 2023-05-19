@@ -20,13 +20,14 @@ const StudentSchema = new Schema({
     },
     rollNo: {
         type: String,
-        required: true
-    },
-    email: {
-        type: String,
         required: true,
         unique: true
     },
+    // email: {
+    //     type: String,
+    //     required: true,
+    //     unique: true
+    // },
     branch: {
         type: String,
         enum: ['Biotechnology', 'Chemical Engineering', 'Civil Engineering', 'Computer Engineering', 'Electrical Engineering', 'Electronics and Communication Engineering', 'Engineering Physics', 'Environmental Engineering', 'Information Technology', 'Mathematics and Computing', 'Mechanical Engineering', 'Mechanical with Specialization in Automotive Engineering', 'Production and Industrial Engineering', 'Software Engineering'],

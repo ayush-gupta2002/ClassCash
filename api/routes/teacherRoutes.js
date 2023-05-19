@@ -10,12 +10,12 @@ import * as teacher from '../controllers/teachers.js';
 
 router.route('/')
     .get(catchAsync(teacher.index))
-    // .post(catchAsync(teacher.register))
+    .post(catchAsync(teacher.register))
 
 // router.post('/login', passport.authenticate('local', { failureRedirect: '/', keepSessionInfo: true }), teacher.login);
 
 // router.post('/login', passport.authenticate('local',))
-    
+
 router.route('/:id')
     .get(catchAsync(teacher.show))
     .put(catchAsync(teacher.update))

@@ -11,7 +11,7 @@ import * as student from '../controllers/students.js';
 router.route('/')
     //we'll check if the person sending the request is a teacher or CR
     .get(catchAsync(student.index))
-    // .post(catchAsync(student.register))
+    .post(catchAsync(student.register))
 
 // router.post('/login', passport.authenticate('local', { failureRedirect: '/', keepSessionInfo: true }), student.login);
 
