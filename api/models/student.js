@@ -44,6 +44,10 @@ const StudentSchema = new Schema({
     isCR: {
         type: Boolean,
         default: false,
+    },
+    coins: {
+        type: Number,
+        default: 0
     }
 });
 
