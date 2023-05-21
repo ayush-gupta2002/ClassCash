@@ -24,7 +24,11 @@ const TeacherSchema = new Schema({
         type: String,
         enum: ['Biotechnology', 'Chemical Engineering', 'Civil Engineering', 'Computer Engineering', 'Electrical Engineering', 'Electronics and Communication Engineering', 'Engineering Physics', 'Environmental Engineering', 'Information Technology', 'Mathematics and Computing', 'Mechanical Engineering', 'Mechanical with Specialization in Automotive Engineering', 'Production and Industrial Engineering', 'Software Engineering'],
         required: true
-    }
+    },
+    batches: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Batch'
+    }]
 })
 
 TeacherSchema.virtual('fullName').get(function () {
