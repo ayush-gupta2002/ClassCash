@@ -1,8 +1,7 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-function Input({ type, label, min, max }) {
-  const { register } = useFormContext();
+function Input({ type, label, min, max, name }) {
   let minVal, maxVal;
   if (min) {
     minVal = min;
@@ -19,12 +18,7 @@ function Input({ type, label, min, max }) {
           className="border-2 border-white bg-black focus:bg-white focus:outline-none focus:bg-white duration-500 font-semibold text-gray-500 p-2 text-xl"
           min={minVal}
           max={maxVal}
-          {...register(label, {
-            required: {
-              value: true,
-              message: "required",
-            },
-          })}
+          name={name}
         ></input>
       </div>
     </div>

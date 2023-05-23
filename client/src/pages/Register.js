@@ -1,38 +1,13 @@
 import React, { useState, useForm } from "react";
-import Button from "../components/Button";
-import Input from "../components/Input";
 import { GiTeacher } from "react-icons/gi";
 import { AiOutlineBook } from "react-icons/ai";
 import classNames from "classnames";
 import StudentRegForm from "../components/StudentRegForm";
-import { FormProvider } from "react-advanced-form";
 import TeacherRegForm from "../components/TeacherRegForm";
+import CredentialsForm from "../components/CredentialsForm";
 
 function Register() {
   const [visibleForm, setVisibleForm] = useState("Student");
-  const branches = [
-    "Biotechnology",
-    "Chemical Engineering",
-    "Civil Engineering",
-    "Computer Engineering",
-    "Electrical Engineering",
-    "Electronics and Communication Engineering",
-    "Engineering Physics",
-    "Environmental Engineering",
-    "Information Technology",
-    "Mathematics and Computing",
-    "Mechanical Engineering",
-    "Mechanical with Specialization in Automotive Engineering",
-    "Production and Industrial Engineering",
-    "Software Engineering",
-  ];
-  const renderedBranches = branches.map((b) => {
-    return <option>{b}</option>;
-  });
-  const batches = ["EE-A", "EE-B", "CO-A", "CO-B", "AE-A", "AE-B"];
-  const renderedBatches = batches.map((b) => {
-    return <option>{b}</option>;
-  });
   const studentClasses = classNames({
     flex: true,
     "flex-col": true,
@@ -61,15 +36,13 @@ function Register() {
     "bg-white": visibleForm === "Teacher",
     "text-black": visibleForm === "Teacher",
   });
-
-  let studentForm = <StudentRegForm></StudentRegForm>;
-  let teacherForm;
-  let content = studentForm;
+  let content = <StudentRegForm></StudentRegForm>;
   if (visibleForm === "Student") {
-    content = studentForm;
+    content = <StudentRegForm></StudentRegForm>;
   } else {
-    content = teacherForm;
+    content = <TeacherRegForm></TeacherRegForm>;
   }
+
   return (
     <div className="max-h-screen my-10 bg-black">
       <div className="w-full flex my-6">
@@ -77,11 +50,7 @@ function Register() {
           <div
             className={studentClasses}
             onClick={() => {
-              if (visibleForm === "Teacher") {
-                setVisibleForm("Student");
-              } else {
-                setVisibleForm("Teacher");
-              }
+              setVisibleForm("Student");
             }}
           >
             <AiOutlineBook className="mx-auto text-3xl"></AiOutlineBook>
@@ -90,11 +59,7 @@ function Register() {
           <div
             className={teacherClasses}
             onClick={() => {
-              if (visibleForm === "Student") {
-                setVisibleForm("Teacher");
-              } else {
-                setVisibleForm("Student");
-              }
+              setVisibleForm("Teacher");
             }}
           >
             <GiTeacher className="mx-auto text-3xl"></GiTeacher>

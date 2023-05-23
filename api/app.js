@@ -1,9 +1,12 @@
 import { createRequire } from "module";
-import { MongoClient, ServerApiVersion } from "mongodb";
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
 const require = createRequire(import.meta.url);
+const cors = require("cors");
+require("dotenv").config();
 
 const express = require("express");
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
 // mongoose.set("strictQuery", false);
 // mongoose.connect("mongodb://127.0.0.1:27017/classCash");
@@ -24,38 +27,24 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
-const client = new MongoClient(process.env.MONGODB_URI, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("DB Connection Successful");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // const db = mongoose.connection;
 // db.on("error", console.error.bind(console, "connection error:"));
 // db.once("open", () => {
 //   console.log("Database connected");
 // });
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
 
 const app = express();
-
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(bodyParser());
 
 const sessionConfig = {
   name: "session",
