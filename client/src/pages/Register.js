@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useForm } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { GiTeacher } from "react-icons/gi";
 import { AiOutlineBook } from "react-icons/ai";
 import classNames from "classnames";
+import StudentRegForm from "../components/StudentRegForm";
+import { FormProvider } from "react-advanced-form";
+import TeacherRegForm from "../components/TeacherRegForm";
 
 function Register() {
   const [visibleForm, setVisibleForm] = useState("Student");
@@ -23,7 +26,11 @@ function Register() {
     "Production and Industrial Engineering",
     "Software Engineering",
   ];
-  const renderedBraches = branches.map((b) => {
+  const renderedBranches = branches.map((b) => {
+    return <option>{b}</option>;
+  });
+  const batches = ["EE-A", "EE-B", "CO-A", "CO-B", "AE-A", "AE-B"];
+  const renderedBatches = batches.map((b) => {
     return <option>{b}</option>;
   });
   const studentClasses = classNames({
@@ -54,6 +61,15 @@ function Register() {
     "bg-white": visibleForm === "Teacher",
     "text-black": visibleForm === "Teacher",
   });
+
+  let studentForm = <StudentRegForm></StudentRegForm>;
+  let teacherForm;
+  let content = studentForm;
+  if (visibleForm === "Student") {
+    content = studentForm;
+  } else {
+    content = teacherForm;
+  }
   return (
     <div className="max-h-screen my-10 bg-black">
       <div className="w-full flex my-6">
@@ -86,24 +102,7 @@ function Register() {
           </div>
         </div>
       </div>
-      <div className="flex">
-        <form className="grid grid-cols-2 w-1/2 h-full mx-auto gap-10">
-          <Input label="First Name" type="text"></Input>
-          <Input label="Last Name" type="text"></Input>
-          <Input label="Date of Birth" type="date"></Input>
-          <Input label="Roll Number" type="text"></Input>
-          <div className="flex flex-col gap-2 w-full">
-            <h3 className="font-semibold text-lg text-white">Branch</h3>
-            <select className="cursor-pointer border-2 border-white bg-black focus:bg-white focus:outline-none focus:bg-white duration-500 font-semibold text-gray-500 p-2 text-xl">
-              {renderedBraches}
-            </select>
-          </div>
-          <Input label="Semester" type="number" min={1} max={8}></Input>
-          <div className="col-span-2">
-            <Button wide>Continue</Button>
-          </div>
-        </form>
-      </div>
+      <div className="flex">{content}</div>
     </div>
   );
 }
