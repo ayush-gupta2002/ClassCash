@@ -12,6 +12,7 @@ import Teacher from "./models/teacher.js";
 import Batch from "./models/batch.js";
 import Timetable from "./models/timeTable.js";
 import User from "./models/user.js";
+import Course from "./models/course.js";
 
 import studentRoutes from './routes/studentRoutes.js';
 import teacherRoutes from './routes/teacherRoutes.js';

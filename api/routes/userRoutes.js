@@ -14,6 +14,8 @@ router.route('/register')
 
 router.post('/login', passport.authenticate('local', { failureRedirect: '/', keepSessionInfo: true, }), user.loginUser);
 
+router.get('/logout', user.logoutUser);
+
 // router.get('/logout',user.logout);
 
 export default router;
