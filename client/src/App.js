@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import StudentProfile from "./pages/StudentProfile";
 
 function App() {
@@ -13,8 +14,9 @@ function App() {
       <div className="w-full">
         <Navbar></Navbar>
         {/* <Home></Home> */}
-        <StudentProfile></StudentProfile>
-        <Footer></Footer>
+        {/* <StudentProfile></StudentProfile>
+        <Footer></Footer> */}
+        <Register></Register>
       </div>
       {/* <Login></Login> */}
     </div>
