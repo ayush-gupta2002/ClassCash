@@ -1,4 +1,5 @@
 import Student from "../models/student.js";
+import Course from "../models/course.js";
 
 export const index = async (req, res) => {
     const students = await Student.find({});
@@ -6,7 +7,10 @@ export const index = async (req, res) => {
 }
 
 export const register = async (req, res) => {
+    const compulsoryCourses = await Course.findOne({ sem: req.body.semester, branch: req.body.branch });
     const student = new Student(req.body);
+    student.courses.unshift(...compulsoryCourses.courses);
+    console.log(student);
     await student.save();
     res.status(201).json(student);
 }
