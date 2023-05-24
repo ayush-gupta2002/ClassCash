@@ -1,5 +1,6 @@
 import Student from "../models/student.js";
 import Course from "../models/course.js";
+import Batch from "../models/batch.js";
 
 export const index = async (req, res) => {
   const students = await Student.find({});
@@ -9,11 +10,26 @@ export const index = async (req, res) => {
 export const register = async (req, res) => {
   // const compulsoryCourses = await Course.findOne({ sem: req.body.semester, branch: req.body.branch });
   try {
-    console.log("student", req.body);
-    const student = new Student(req.body);
     // student.courses.unshift(...compulsoryCourses.courses);
-    const res = await student.save();
-    res.status(201).json(res);
+    const studentBatch = req.body.batch;
+    const foundBatch = await Batch.find({ name: studentBatch });
+    const newStudent = new Student(req.body);
+    try {
+      try {
+        const savedStudent = await newStudent.save();
+      } catch (err) {
+        console.log(err);
+      }
+      const updatedBatch = await Batch.update(
+        { _id: foundBatch._id },
+        { $push: { students: newStudent._id } }
+      );
+      console.log(updatedBatch);
+      console.log(savedStudent);
+      res.status(201).json(newStudent);
+    } catch (err) {
+      res.status(500).json(err);
+    }
   } catch (err) {
     res.status(500).json(err);
   }

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { FormProvider } from "react-advanced-form";
 import Input from "./Input";
 import Button from "./Button";
+import axios from "axios";
 
-function TeacherRegForm({ info, setInfo }) {
-  const methods = useForm();
-  let newInfo = {};
+function TeacherRegForm({ foundBatches }) {
+  let info = {};
+  let credInfo = {};
+  let batchesInfo = [];
   const branches = [
     "Biotechnology",
     "Chemical Engineering",
@@ -26,17 +26,38 @@ function TeacherRegForm({ info, setInfo }) {
   const renderedBranches = branches.map((b) => {
     return <option>{b}</option>;
   });
-  const batches = ["EE-A", "EE-B", "CO-A", "CO-B", "AE-A", "AE-B"];
-  const renderedBatches = batches.map((b) => {
-    return <option>{b}</option>;
+  const renderedBatches = foundBatches.map((b) => {
+    return <option>{b.name}</option>;
   });
-  const handleSubmit = (e) => {
-    for (let i = 0; i < 10; i++) {
+  const handleSubmit = async (e) => {
+    for (let i = 0; i < 3; i++) {
       const field = e.target[i].name;
       const value = e.target[i].value;
-      newInfo[field] = value;
+      info[field] = value;
     }
-    setInfo(newInfo);
+    for (let i = 3; i < 8; i++) {
+      batchesInfo.push(e.target[i].value);
+    }
+    for (let i = 8; i < 10; i++) {
+      const field = e.target[i].name;
+      const value = e.target[i].value;
+      credInfo[field] = value;
+    }
+    try {
+      const res = await axios.post("http://localhost:3000/teachers", {
+        info: info,
+        batchesInfo: batchesInfo,
+      });
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+    try {
+      const res = await axios.post("http://localhost:3000/register", credInfo);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <form

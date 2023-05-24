@@ -1,13 +1,26 @@
-import React, { useState, useForm } from "react";
+import React, { useState, useEffect } from "react";
 import { GiTeacher } from "react-icons/gi";
 import { AiOutlineBook } from "react-icons/ai";
 import classNames from "classnames";
 import StudentRegForm from "../components/StudentRegForm";
 import TeacherRegForm from "../components/TeacherRegForm";
-import CredentialsForm from "../components/CredentialsForm";
+import axios from "axios";
 
 function Register() {
   const [visibleForm, setVisibleForm] = useState("Student");
+  const [foundBatches, setFoundBatches] = useState([]);
+  useEffect(() => {
+    const getBatches = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/batches");
+        setFoundBatches(res.data);
+        console.log(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getBatches();
+  }, []);
   const studentClasses = classNames({
     flex: true,
     "flex-col": true,
@@ -36,11 +49,11 @@ function Register() {
     "bg-white": visibleForm === "Teacher",
     "text-black": visibleForm === "Teacher",
   });
-  let content = <StudentRegForm></StudentRegForm>;
+  let content = <StudentRegForm foundBatches={foundBatches}></StudentRegForm>;
   if (visibleForm === "Student") {
-    content = <StudentRegForm></StudentRegForm>;
+    content = <StudentRegForm foundBatches={foundBatches}></StudentRegForm>;
   } else {
-    content = <TeacherRegForm></TeacherRegForm>;
+    content = <TeacherRegForm foundBatches={foundBatches}></TeacherRegForm>;
   }
 
   return (

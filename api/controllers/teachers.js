@@ -1,15 +1,25 @@
 import Teacher from "../models/teacher.js";
 
 export const index = async (req, res) => {
-    const teachers = await Teacher.find({});
-    res.status(200).json(teachers);
-}
+  const teachers = await Teacher.find({});
+  res.status(200).json(teachers);
+};
 
 export const register = async (req, res) => {
-    const teacher = new Teacher(req.body);
-    await teacher.save();
-    res.status(201).json(teacher);
-}
+  console.log(req.body);
+  let newTeacher = new Teacher();
+  newTeacher.firstName = req.body.firstName;
+  newTeacher.lastName = req.body.lastName;
+  newTeacher.branch = req.body.branch;
+
+  console.log(newTeacher);
+  try {
+    const res = await newTeacher.save();
+    res.status(201).json(res);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
 
 // export const register = async (req, res) => {
 //     try {
@@ -34,23 +44,23 @@ export const register = async (req, res) => {
 // }
 
 export const show = async (req, res) => {
-    const { id } = req.params;
-    const teacher = await Teacher.findById(id);
-    if (!teacher) {
-        return res.status(404);
-    }
-    res.status(200).json(teacher);
-}
+  const { id } = req.params;
+  const teacher = await Teacher.findById(id);
+  if (!teacher) {
+    return res.status(404);
+  }
+  res.status(200).json(teacher);
+};
 
 export const update = async (req, res) => {
-    const { id } = req.params;
-    const teacher = await Teacher.findByIdAndUpdate(id, { ...req.body });
-    await teacher.save();
-    res.status(200).json(teacher);
-}
+  const { id } = req.params;
+  const teacher = await Teacher.findByIdAndUpdate(id, { ...req.body });
+  await teacher.save();
+  res.status(200).json(teacher);
+};
 
 export const deleteTeacher = async (req, res) => {
-    const { id } = req.params;
-    const teacher = await Teacher.findByIdAndDelete(id);
-    return res.status(200).json(teacher);
-}
+  const { id } = req.params;
+  const teacher = await Teacher.findByIdAndDelete(id);
+  return res.status(200).json(teacher);
+};

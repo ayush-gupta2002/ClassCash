@@ -2,7 +2,6 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 import { Schema, model } from "mongoose";
-const passportLocalMongoose = require("passport-local-mongoose");
 
 const StudentSchema = new Schema({
   firstName: {
@@ -53,6 +52,10 @@ const StudentSchema = new Schema({
   },
   semester: {
     type: Number,
+    required: true,
+  },
+  batch: {
+    type: String,
     required: true,
   },
   isCR: {

@@ -1,20 +1,23 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
 import Input from "./Input";
 import Button from "./Button";
 import axios from "axios";
 
-function StudentRegForm() {
+function StudentRegForm({ foundBatches }) {
   let info = {};
   let credInfo = {};
 
+  const renderedBatches = foundBatches.map((b) => {
+    return <option>{b.name}</option>;
+  });
+
   const handleSubmit = async (e) => {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       const field = e.target[i].name;
       const value = e.target[i].value;
       info[field] = value;
     }
-    for (let i = 6; i < 8; i++) {
+    for (let i = 7; i < 9; i++) {
       const field = e.target[i].name;
       const value = e.target[i].value;
       credInfo[field] = value;
@@ -64,7 +67,7 @@ function StudentRegForm() {
       <Input label="Last Name" type="text" name="lastName"></Input>
       <Input label="Date of Birth" type="date" name="dob"></Input>
       <Input label="Roll Number" type="text" name="rollNo"></Input>
-      <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-col gap-2 w-full col-span-2">
         <h3 className="font-semibold text-lg text-white">Branch</h3>
         <select
           className="cursor-pointer border-2 border-white bg-black focus:bg-white focus:outline-none focus:bg-white duration-500 font-semibold text-gray-500 p-2 text-xl"
@@ -80,6 +83,15 @@ function StudentRegForm() {
         max={8}
         name="semester"
       ></Input>
+      <div className="flex flex-col gap-2 w-full col-span-1">
+        <h3 className="font-semibold text-lg text-white">Batch</h3>
+        <select
+          className="cursor-pointer border-2 border-white bg-black focus:bg-white focus:outline-none focus:bg-white duration-500 font-semibold text-gray-500 p-2 text-xl"
+          name="batch"
+        >
+          {renderedBatches}
+        </select>
+      </div>
       <Input label="Email" type="email" name="email"></Input>
       <Input label="Password" type="password" name="password"></Input>
       <div className="col-span-2">
