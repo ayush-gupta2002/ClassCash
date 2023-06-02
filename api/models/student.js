@@ -1,7 +1,7 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const StudentSchema = new Schema({
   firstName: {
@@ -11,6 +11,11 @@ const StudentSchema = new Schema({
   lastName: {
     type: String,
     required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
   },
   dob: {
     type: Date,
@@ -55,7 +60,7 @@ const StudentSchema = new Schema({
     required: true,
   },
   batch: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   isCR: {

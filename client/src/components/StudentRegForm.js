@@ -2,8 +2,10 @@ import React from "react";
 import Input from "./Input";
 import Button from "./Button";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function StudentRegForm({ foundBatches }) {
+  const navigate = useNavigate();
   let info = {};
   let credInfo = {};
 
@@ -21,7 +23,9 @@ function StudentRegForm({ foundBatches }) {
       const field = e.target[i].name;
       const value = e.target[i].value;
       credInfo[field] = value;
+      info[field] = value;
     }
+    credInfo["student"] = true;
     try {
       const res = await axios.post("http://localhost:3000/students", info);
       console.log(res.data);
@@ -30,7 +34,7 @@ function StudentRegForm({ foundBatches }) {
     }
     try {
       const res = await axios.post("http://localhost:3000/register", credInfo);
-      console.log(res.data);
+      navigate("/login");
     } catch (err) {
       console.log(err);
     }

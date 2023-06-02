@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Input from "./Input";
 import Button from "./Button";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function TeacherRegForm({ foundBatches }) {
+  const navigate = useNavigate();
   let info = {};
   let credInfo = {};
   let batchesInfo = [];
@@ -42,7 +44,9 @@ function TeacherRegForm({ foundBatches }) {
       const field = e.target[i].name;
       const value = e.target[i].value;
       credInfo[field] = value;
+      info[field] = value;
     }
+    credInfo["teacher"] = true;
     try {
       const res = await axios.post("http://localhost:3000/teachers", {
         info: info,
@@ -54,7 +58,7 @@ function TeacherRegForm({ foundBatches }) {
     }
     try {
       const res = await axios.post("http://localhost:3000/register", credInfo);
-      console.log(res.data);
+      navigate("/login");
     } catch (err) {
       console.log(err);
     }

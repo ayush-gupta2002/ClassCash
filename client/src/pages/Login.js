@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import classNames from "classnames";
+import Footer from "../components/Footer";
+import { login } from "../redux/apiCalls";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state);
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const buttonClasses = classNames({
     "w-full": true,
@@ -16,8 +23,7 @@ function Login() {
     "duration-500": true,
   });
 
-  console.log(email);
-  console.log(password);
+  const dispatch = useDispatch();
 
   let buttonDisabled;
   if (email === "" || password === "") {
@@ -26,45 +32,76 @@ function Login() {
     buttonDisabled = false;
   }
 
+  console.log(user.currentUser);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    login(dispatch, { email: email, password: password });
+    if (!user.error) {
+      navigate("/home");
+    } else {
+      setError("Please enter the correct credentials!");
+    }
+  };
+
+  let errorContent = <div></div>;
+  if (error) {
+    errorContent = (
+      <h3 className="font-semibold text-white mx-auto mt-10 text-lg">
+        {error}
+      </h3>
+    );
+  }
+
   return (
-    <div className="m-auto w-1/2 flex">
-      <form className="w-1/2 mx-auto">
-        <div className="flex flex-col my-6">
-          <label
-            className="text-gray-400 font-semibold text-2xl mb-2"
-            htmlFor="email"
-          >
-            Email ID
-          </label>
-          <input
-            className="border-2 bg-black p-2 focus:outline-none text-gray-300"
-            id="email"
-            type="email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          ></input>
-        </div>
-        <div className="flex flex-col my-6">
-          <label
-            className="text-gray-400 font-semibold text-2xl mb-2"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            className="border-2 bg-black p-2 focus:outline-none text-gray-300"
-            id="password"
-            type="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          ></input>
-        </div>
-        <button disabled={buttonDisabled} className={buttonClasses}>
-          Login
-        </button>
-      </form>
+    <div className="h-screen flex flex-col">
+      {errorContent}
+
+      <div className="w-full md:w-1/2 flex h-full mx-auto">
+        <form
+          className="w-1/2 m-auto"
+          onSubmit={(e) => {
+            handleLogin(e);
+          }}
+        >
+          <div className="flex flex-col my-6">
+            <label
+              className="text-gray-400 font-semibold text-2xl mb-2"
+              htmlFor="email"
+            >
+              Email ID
+            </label>
+            <input
+              className="border-2 bg-black p-2 focus:outline-none text-gray-300"
+              id="email"
+              type="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            ></input>
+          </div>
+          <div className="flex flex-col my-6">
+            <label
+              className="text-gray-400 font-semibold text-2xl mb-2"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              className="border-2 bg-black p-2 focus:outline-none text-gray-300"
+              id="password"
+              type="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            ></input>
+          </div>
+          <button disabled={buttonDisabled} className={buttonClasses}>
+            Login
+          </button>
+        </form>
+      </div>
+      <Footer></Footer>
     </div>
   );
 }

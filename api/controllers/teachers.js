@@ -1,3 +1,4 @@
+import Batch from "../models/batch.js";
 import Teacher from "../models/teacher.js";
 
 export const index = async (req, res) => {
@@ -8,14 +9,26 @@ export const index = async (req, res) => {
 export const register = async (req, res) => {
   console.log(req.body);
   let newTeacher = new Teacher();
-  newTeacher.firstName = req.body.firstName;
-  newTeacher.lastName = req.body.lastName;
-  newTeacher.branch = req.body.branch;
+  newTeacher.firstName = req.body.info.firstName;
+  newTeacher.lastName = req.body.info.lastName;
+  newTeacher.branch = req.body.info.branch;
+  newTeacher.email = req.body.info.email;
+
+  for (let i = 0; i < 5; i++) {
+    try {
+      const foundBatch = await Batch.findOne({ name: req.body.batchesInfo[i] });
+      newTeacher.batches.push(foundBatch);
+      foundBatch.teachers.push(newTeacher._id);
+      await foundBatch.save();
+    } catch (err) {
+      res.status(500).json("Batch could not be found");
+    }
+  }
 
   console.log(newTeacher);
   try {
     const res = await newTeacher.save();
-    res.status(201).json(res);
+    res.status(201).json(newTeacher);
   } catch (err) {
     res.status(500).json(err);
   }
