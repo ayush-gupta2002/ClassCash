@@ -2,12 +2,17 @@ import { Schema, model } from 'mongoose';
 
 const attendanceSchema = new Schema({
     date: {
-        type: date,
+        type: Date,
         required: true
     },
     teacher: {
         type: Schema.Types.ObjectId,
         ref: 'Teacher',
+        required: true
+    },
+    batch: {
+        type: Schema.Types.ObjectId,
+        ref: 'Batch',
         required: true
     },
     absent: [{

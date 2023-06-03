@@ -6,9 +6,8 @@ const cors = require("cors");
 require("dotenv").config();
 
 const express = require("express");
-// import mongoose from "mongoose";
 
-// mongoose.set("strictQuery", false);
+mongoose.set("strictQuery", false);
 // mongoose.connect("mongodb://127.0.0.1:27017/classCash");
 
 import Student from "./models/student.js";
@@ -17,6 +16,7 @@ import Batch from "./models/batch.js";
 import Timetable from "./models/timeTable.js";
 import User from "./models/user.js";
 import Course from "./models/course.js";
+import Attendance from "./models/attendance.js";
 
 import studentRoutes from "./routes/studentRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
