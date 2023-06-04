@@ -2,36 +2,36 @@ import Batch from "../models/batch.js";
 import Teacher from "../models/teacher.js";
 
 export const index = async (req, res) => {
-  const teachers = await Teacher.find({});
-  res.status(200).json(teachers);
+	const teachers = await Teacher.find({});
+	res.status(200).json(teachers);
 };
 
 export const register = async (req, res) => {
-  console.log(req.body);
-  let newTeacher = new Teacher();
-  newTeacher.firstName = req.body.info.firstName;
-  newTeacher.lastName = req.body.info.lastName;
-  newTeacher.branch = req.body.info.branch;
-  newTeacher.email = req.body.info.email;
+	console.log(req.body);
+	let newTeacher = new Teacher();
+	newTeacher.firstName = req.body.info.firstName;
+	newTeacher.lastName = req.body.info.lastName;
+	newTeacher.branch = req.body.info.branch;
+	newTeacher.email = req.body.info.email;
 
-  for (let i = 0; i < 5; i++) {
-    try {
-      const foundBatch = await Batch.findOne({ name: req.body.batchesInfo[i] });
-      newTeacher.batches.push(foundBatch);
-      foundBatch.teachers.push(newTeacher._id);
-      await foundBatch.save();
-    } catch (err) {
-      res.status(500).json("Batch could not be found");
-    }
-  }
+	for (let i = 0; i < 5; i++) {
+		try {
+			const foundBatch = await Batch.findOne({ name: req.body.batchesInfo[i] });
+			newTeacher.batches.push(foundBatch);
+			foundBatch.teachers.push(newTeacher._id);
+			await foundBatch.save();
+		} catch (err) {
+			res.status(500).json("Batch could not be found");
+		}
+	}
 
-  console.log(newTeacher);
-  try {
-    const res = await newTeacher.save();
-    res.status(201).json(newTeacher);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+	console.log(newTeacher);
+	try {
+		const res = await newTeacher.save();
+		res.status(201).json(newTeacher);
+	} catch (err) {
+		res.status(500).json(err);
+	}
 };
 
 // export const register = async (req, res) => {
@@ -57,23 +57,23 @@ export const register = async (req, res) => {
 // }
 
 export const show = async (req, res) => {
-  const { id } = req.params;
-  const teacher = await Teacher.findById(id);
-  if (!teacher) {
-    return res.status(404);
-  }
-  res.status(200).json(teacher);
+	const { id } = req.params;
+	const teacher = await Teacher.findById(id);
+	if (!teacher) {
+		return res.status(404);
+	}
+	res.status(200).json(teacher);
 };
 
 export const update = async (req, res) => {
-  const { id } = req.params;
-  const teacher = await Teacher.findByIdAndUpdate(id, { ...req.body });
-  await teacher.save();
-  res.status(200).json(teacher);
+	const { id } = req.params;
+	const teacher = await Teacher.findByIdAndUpdate(id, { ...req.body });
+	await teacher.save();
+	res.status(200).json(teacher);
 };
 
 export const deleteTeacher = async (req, res) => {
-  const { id } = req.params;
-  const teacher = await Teacher.findByIdAndDelete(id);
-  return res.status(200).json(teacher);
+	const { id } = req.params;
+	const teacher = await Teacher.findByIdAndDelete(id);
+	return res.status(200).json(teacher);
 };
