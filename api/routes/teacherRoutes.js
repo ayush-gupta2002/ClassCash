@@ -22,4 +22,9 @@ router.route('/:id/attendance')
     .get(catchAsync(teacher.allAttendance))
     .post(catchAsync(teacher.createAttendance))
 
+router.route('/:id/attendance/:attendanceId')
+    .get(catchAsync(teacher.showAttendance))
+    .put(catchAsync(teacher.updateAttendance))
+    .delete(catchAsync(teacher.deleteAttendance))
+
 export default router;

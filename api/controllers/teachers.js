@@ -101,3 +101,32 @@ export const createAttendance = async (req, res) => {
 		res.status(500).json(e);
 	}
 }
+
+export const showAttendance = async (req, res) => {
+	const { attendanceId } = req.params;
+	const foundAttendance = await Attendance.findById(attendanceId);
+	res.status(201).json(foundAttendance);
+}
+
+export const updateAttendance = async (req, res) => {
+	const { id, attendanceId } = req.params;
+	const { date, batch, absent, present } = req.body;
+
+	const newDate = new Date(date.year, date.month, date.date);
+
+	try {
+		const foundBatch = await Batch.findOne({ name: batch });
+		const attendance = await Attendance.findByIdAndUpdate(attendanceId, { date: newDate, teacher: id, batch: foundBatch, absent: absent, present: present });
+		await attendance.save();
+		res.status(200).json(attendance);
+	}
+	catch (e) {
+		res.status(500).json(e);
+	}
+}
+
+export const deleteAttendance = async (req, res) => {
+	const { attendanceId } = req.params;
+	const attendance = await Attendance.findByIdAndDelete(attendanceId);
+	res.status(201).json(attendance);
+}

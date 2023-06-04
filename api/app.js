@@ -22,7 +22,6 @@ import studentRoutes from "./routes/studentRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
 import batchRoutes from "./routes/batchRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import attendanceRoutes from "./routes/attendanceRoutes.js";
 
 const session = require("express-session");
 const passport = require("passport");
@@ -72,7 +71,6 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/students", studentRoutes);
 app.use("/teachers", teacherRoutes);
 app.use("/batches", batchRoutes);
-app.use("/attendances", attendanceRoutes);
 app.use("/", userRoutes);
 
 app.get("/", (req, res) => {
