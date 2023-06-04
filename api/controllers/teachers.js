@@ -1,6 +1,7 @@
 import Batch from "../models/batch.js";
 import Teacher from "../models/teacher.js";
 import Attendance from "../models/attendance.js";
+import Student from "../models/student.js";
 
 export const index = async (req, res) => {
 	const teachers = await Teacher.find({});
@@ -94,6 +95,29 @@ export const createAttendance = async (req, res) => {
 	try {
 		const foundBatch = await Batch.findOne({ name: batch });
 		const newAttendance = new Attendance({ date: newDate, teacher: id, batch: foundBatch, absent: absent, present: present });
+
+		for (let student of absent) {
+			try {
+				let foundStudent = await Student.findById(student);
+				foundStudent.coins -= 10;
+				await foundStudent.save();
+			}
+			catch (e) {
+				res.status(500).json(e);
+			}
+		}
+
+		for (let student of present) {
+			try {
+				let foundStudent = await Student.findById(student);
+				foundStudent.coins += 20;
+				await foundStudent.save();
+			}
+			catch (e) {
+				res.status(500).json(e);
+			}
+		}
+
 		await newAttendance.save();
 		res.status(200).json(newAttendance);
 	}
