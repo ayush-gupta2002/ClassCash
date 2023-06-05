@@ -1,11 +1,8 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
 const express = require("express");
 const router = express.Router();
-import catchAsync from "../utils/catchAsync.js";
-import passport from "passport";
-import * as user from "../controllers/users.js";
+const catchAsync = require("../utils/catchAsync");
+const passport = require("passport");
+const user = require("../controllers/users");
 
 // router.post('/register', catchAsync(user.register));
 
@@ -17,4 +14,4 @@ router.get("/logout", user.logoutUser);
 
 // router.get('/logout',user.logout);
 
-export default router;
+module.exports = router;

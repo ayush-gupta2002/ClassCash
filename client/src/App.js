@@ -5,13 +5,10 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import StudentProfile from "./pages/StudentProfile";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
+import TeacherProfile from "./pages/TeacherProfile";
+import Batch from "./pages/Batch";
 
 function App() {
   const user = useSelector((state) => state.currentUser);
@@ -20,6 +17,8 @@ function App() {
     { path: "/login", element: <Login></Login> },
     { path: "/home", element: <Home></Home> },
     { path: "/studentprofile", element: <StudentProfile></StudentProfile> },
+    { path: "/teacherprofile", element: <TeacherProfile></TeacherProfile> },
+    { path: "/batch/:id", element: <Batch></Batch> },
   ];
   const renderedRoutes = routes.map((r) => {
     if (user) {

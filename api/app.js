@@ -1,31 +1,45 @@
-import { createRequire } from "module";
-import mongoose from "mongoose";
-import bodyParser from "body-parser";
-const require = createRequire(import.meta.url);
-const cors = require("cors");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 require("dotenv").config();
-
+const cors = require("cors");
 const express = require("express");
+const app = express();
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+app.use(cors());
+app.use(bodyParser());
 
 mongoose.set("strictQuery", false);
-// mongoose.connect("mongodb://127.0.0.1:27017/classCash");
-
-import Student from "./models/student.js";
-import Teacher from "./models/teacher.js";
-import Batch from "./models/batch.js";
-import Timetable from "./models/timeTable.js";
-import User from "./models/user.js";
-import Course from "./models/course.js";
-import Attendance from "./models/attendance.js";
-
-import studentRoutes from "./routes/studentRoutes.js";
-import teacherRoutes from "./routes/teacherRoutes.js";
-import batchRoutes from "./routes/batchRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-
-const session = require("express-session");
+const User = require("./models/user");
+const studentRoutes = require("./routes/studentRoutes");
+const teacherRoutes = require("./routes/teacherRoutes");
+const batchRoutes = require("./routes/batchRoutes");
+const userRoutes = require("./routes/userRoutes");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const { verifyTokenAndTeacher } = require("./routes/verifyToken");
+
+const store = MongoStore.create({
+  mongoUrl: process.env.MONGODB_URI,
+  secret: process.env.SECRET,
+  touchAfter: 24 * 60 * 60,
+});
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR", e);
+});
+const sessionConfig = {
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+  name: "session",
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -35,29 +49,6 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-
-// const db = mongoose.connection;
-// db.on("error", console.error.bind(console, "connection error:"));
-// db.once("open", () => {
-//   console.log("Database connected");
-// });
-
-const app = express();
-app.use(cors());
-app.use(bodyParser());
-
-const sessionConfig = {
-  name: "session",
-  secret: "letsseeifthisisagoodsecret",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    // secure: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
-};
 
 app.use(session(sessionConfig));
 app.use(passport.initialize());

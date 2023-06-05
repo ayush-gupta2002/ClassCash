@@ -1,31 +1,35 @@
-import { Schema, model } from 'mongoose';
+const { Schema, model } = require("mongoose");
 
 const attendanceSchema = new Schema({
-    date: {
-        type: Date,
-        required: true
+  date: {
+    type: Date,
+    required: true,
+  },
+  teacher: {
+    type: Schema.Types.ObjectId,
+    ref: "Teacher",
+    required: true,
+  },
+  batch: {
+    type: Schema.Types.ObjectId,
+    ref: "Batch",
+    required: true,
+  },
+  absent: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Student",
+      required: true,
     },
-    teacher: {
-        type: Schema.Types.ObjectId,
-        ref: 'Teacher',
-        required: true
+  ],
+  present: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Student",
+      required: true,
     },
-    batch: {
-        type: Schema.Types.ObjectId,
-        ref: 'Batch',
-        required: true
-    },
-    absent: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Student',
-        required: true
-    }],
-    present: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Student',
-        required: true
-    }]
+  ],
 });
 
-const Attendance = model('Attendance', attendanceSchema);
-export default Attendance;
+const Attendance = model("Attendance", attendanceSchema);
+module.exports = Attendance;

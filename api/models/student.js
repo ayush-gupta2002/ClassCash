@@ -1,7 +1,5 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
-import mongoose, { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
 
 const StudentSchema = new Schema({
   firstName: {
@@ -78,4 +76,5 @@ StudentSchema.virtual("fullName").get(function () {
 
 // StudentSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 
-export default model("Student", StudentSchema);
+const Student = model("Student", StudentSchema);
+module.exports = Student;

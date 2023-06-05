@@ -1,6 +1,6 @@
-import Batch from "../models/batch.js";
+const Batch = require("../models/batch");
 
-export const index = async (req, res) => {
+const index = async (req, res) => {
   try {
     const batches = await Batch.find();
     res.status(200).json(batches);
@@ -9,13 +9,13 @@ export const index = async (req, res) => {
   }
 };
 
-export const create = async (req, res) => {
+const create = async (req, res) => {
   const batch = new Batch(req.body);
   await batch.save();
   res.status(201).json(batch);
 };
 
-export const show = async (req, res) => {
+const show = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findById(id)
     .populate("students")
@@ -23,7 +23,6 @@ export const show = async (req, res) => {
       path: "teachers",
       populate: { path: "teacher" },
     });
-  console.log(batch);
 
   if (!batch) {
     return res.status(404);
@@ -31,8 +30,10 @@ export const show = async (req, res) => {
   res.status(200).json(batch);
 };
 
-export const deleteBatch = async (req, res) => {
+const deleteBatch = async (req, res) => {
   const { id } = req.params;
   const batch = await Batch.findByIdAndDelete(id);
   res.status(200).json(batch);
 };
+
+module.exports = { index, create, show, deleteBatch };

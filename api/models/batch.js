@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const batchSchema = new Schema({
   name: {
@@ -38,4 +38,4 @@ batchSchema.virtual("branch").get(function () {
 });
 
 const Batch = model("Batch", batchSchema);
-export default Batch;
+module.exports = Batch;

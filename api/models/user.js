@@ -1,7 +1,4 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const userSchema = new Schema({
@@ -22,4 +19,4 @@ const userSchema = new Schema({
 
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 
-export default model("User", userSchema);
+module.exports = model("User", userSchema);
