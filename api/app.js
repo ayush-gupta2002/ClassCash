@@ -20,41 +20,41 @@ const LocalStrategy = require("passport-local");
 const { verifyTokenAndTeacher } = require("./routes/verifyToken");
 
 const store = MongoStore.create({
-  mongoUrl: process.env.MONGODB_URI,
-  secret: process.env.SECRET,
-  touchAfter: 24 * 60 * 60,
+	mongoUrl: process.env.MONGODB_URI,
+	secret: process.env.SECRET,
+	touchAfter: 24 * 60 * 60,
 });
 
 store.on("error", function (e) {
-  console.log("SESSION STORE ERROR", e);
+	console.log("SESSION STORE ERROR", e);
 });
 const sessionConfig = {
-  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
-  name: "session",
-  secret: process.env.SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
+	store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+	name: "session",
+	secret: process.env.SECRET,
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		httpOnly: true,
+		expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+		maxAge: 1000 * 60 * 60 * 24 * 7,
+	},
 };
 
 mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("DB Connection Successful");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+	.connect(process.env.MONGODB_URI)
+	.then(() => {
+		console.log("DB Connection Successful");
+	})
+	.catch((err) => {
+		console.log(err);
+	});
 
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(
-  new LocalStrategy({ usernameField: "email" }, User.authenticate())
+	new LocalStrategy({ usernameField: "email" }, User.authenticate())
 );
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -65,13 +65,13 @@ app.use("/batches", batchRoutes);
 app.use("/", userRoutes);
 
 app.get("/", (req, res) => {
-  res.send("User not found");
+	res.send("User not found");
 });
 
 app.get("/home", (req, res) => {
-  res.send("Home Page");
+	res.send("Home Page");
 });
 
 app.listen(3000, () => {
-  console.log("Serving on port 3000");
+	console.log("Serving on port 3000");
 });

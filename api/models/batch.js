@@ -1,40 +1,42 @@
 const { Schema, model } = require("mongoose");
 
 const batchSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  year: {
-    type: Number,
-    required: true,
-  },
-  students: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Student",
-    },
-  ],
-  teachers: {
-    type: [
-      {
-        subject: String,
-        teacher: {
-          type: Schema.Types.ObjectId,
-          ref: "Teacher",
-        },
-      },
-    ],
-    required: true,
-  },
+	name: {
+		type: String,
+		required: true
+	},
+	year: {
+		type: Number,
+		required: true
+	},
+	students: [{
+		type: Schema.Types.ObjectId,
+		ref: "Student",
+	},
+	],
+	teachers: {
+		type: [{
+			subject: String,
+			teacher: {
+				type: Schema.Types.ObjectId,
+				ref: "Teacher",
+			},
+		},
+		],
+		required: true
+	},
+	CR: {
+		type: Schema.Types.ObjectId,
+		required: true
+	}
 });
 
 batchSchema.virtual("strength").get(function () {
-  return this.students.length;
+	return this.students.length;
 });
 
 batchSchema.virtual("branch").get(function () {
-  return this.students[0].branch;
+	return this.students[0].branch;
 });
 
 const Batch = model("Batch", batchSchema);
