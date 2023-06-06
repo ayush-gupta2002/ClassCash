@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { BsFillPencilFill } from "react-icons/bs";
 import { AiFillEye, AiOutlinePlus } from "react-icons/ai";
 import StudentList from "../components/StudentList";
+import { Link } from "react-router-dom";
 
 function Batch() {
   const [foundBatch, setFoundBatch] = useState({});
@@ -115,12 +116,14 @@ function Batch() {
   if (selectedOption == "Attendance") {
     content = (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-10 py-6">
-        <div className="h-full bg-gray-900 flex w-full rounded-lg  group hover:bg-gray-300 duration-500 cursor-pointer">
-          <AiOutlinePlus
-            className="text-white m-auto group-hover:text-gray-700 duration-500"
-            size={100}
-          ></AiOutlinePlus>
-        </div>
+        <Link to={`/addattendance/${batchID}`}>
+          <div className="h-full bg-gray-900 flex w-full rounded-lg  group hover:bg-gray-300 duration-500 cursor-pointer">
+            <AiOutlinePlus
+              className="text-white m-auto group-hover:text-gray-700 duration-500"
+              size={100}
+            ></AiOutlinePlus>
+          </div>
+        </Link>
         {renderedRecords}
       </div>
     );

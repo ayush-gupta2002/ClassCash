@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import TeacherProfile from "./pages/TeacherProfile";
 import Batch from "./pages/Batch";
+import AddAttendance from "./pages/AddAttendance";
 
 function App() {
   const user = useSelector((state) => state.currentUser);
@@ -19,6 +20,7 @@ function App() {
     { path: "/studentprofile", element: <StudentProfile></StudentProfile> },
     { path: "/teacherprofile", element: <TeacherProfile></TeacherProfile> },
     { path: "/batch/:id", element: <Batch></Batch> },
+    { path: "/addattendance/:id", element: <AddAttendance></AddAttendance> },
   ];
   const renderedRoutes = routes.map((r) => {
     if (user) {
