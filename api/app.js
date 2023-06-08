@@ -15,6 +15,7 @@ const studentRoutes = require("./routes/studentRoutes");
 const teacherRoutes = require("./routes/teacherRoutes");
 const batchRoutes = require("./routes/batchRoutes");
 const userRoutes = require("./routes/userRoutes");
+const timetableRoutes = require("./routes/timetableRoutes");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const { verifyTokenAndTeacher } = require("./routes/verifyToken");
@@ -62,6 +63,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/students", studentRoutes);
 app.use("/teachers", teacherRoutes);
 app.use("/batches", batchRoutes);
+app.use("/timetables", timetableRoutes);
 app.use("/", userRoutes);
 
 app.get("/", (req, res) => {
