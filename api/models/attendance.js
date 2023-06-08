@@ -15,6 +15,10 @@ const attendanceSchema = new Schema({
 		ref: "Batch",
 		required: true,
 	},
+	subject: {
+		type: String,
+		required: true
+	},
 	absent: [
 		{
 			type: Schema.Types.ObjectId,

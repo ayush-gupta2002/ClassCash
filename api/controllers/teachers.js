@@ -91,6 +91,18 @@ const createAttendance = async (req, res) => {
 	try {
 		const foundBatch = await Batch.findOne({ name: batch });
 		const foundTeacher = await Teacher.findById(req.user.teacherId);
+		const subject = null;
+
+		for (let t of foundBatch.teachers) {
+			if (t.teacher === foundTeacher._id) {
+				subject = t.subject;
+				break;
+			}
+		}
+
+		if (subject === null) {
+			console.log('Teacher is not authorized');
+		}
 
 		let flag = false;
 		// console.log(foundTeacher);
@@ -121,6 +133,7 @@ const createAttendance = async (req, res) => {
 				batch: foundBatch,
 				absent: absent,
 				present: present,
+				subject: subject
 			});
 
 			for (let student of absent) {
