@@ -19,8 +19,6 @@ function AddAttendance() {
   const batchID = window.location.pathname.split("/")[2];
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([...absent, ...present]);
-  const [presentCnt, setPresentCnt] = useState(present.length);
-  const [absentCnt, setAbsentCnt] = useState(absent.length);
 
   useEffect(() => {
     const getBatch = async () => {
@@ -45,6 +43,22 @@ function AddAttendance() {
 
   console.log(absent, present);
 
+  const absentStudents = absent.map((ab) => {
+    return (
+      <h3 className="font-semibold text-lg">
+        {ab.firstName + " " + ab.lastName}
+      </h3>
+    );
+  });
+
+  const presentStudents = present.map((pr) => {
+    return (
+      <h3 className="font-semibold text-lg">
+        {pr.firstName + " " + pr.lastName}
+      </h3>
+    );
+  });
+
   let renderedStudents = <div></div>;
   if (students) {
     renderedStudents = students.map((stu) => {
@@ -57,8 +71,6 @@ function AddAttendance() {
           setPresent={setPresent}
           students={students}
           setStudents={setStudents}
-          setPresentCnt={setPresentCnt}
-          setAbsentCnt={setAbsentCnt}
         ></StudentInAttendance>
       );
     });
@@ -71,22 +83,24 @@ function AddAttendance() {
         <h1 className="text-white font-semibold text-4xl w-full text-center py-2 border-b-2 border-white">
           {batch.name}
         </h1>
-        <div className="flex gap-4 mx-auto mt-4">
-          <div className="flex gap-2">
-            <h3 className="font-semibold text-gray-500 text-2xl">Present</h3>
-            <h3 className="font-semibold text-gray-500 text-2xl text-white">
-              {presentCnt}
-            </h3>
+        <div className="flex w-full h-full">
+          <div className="w-1/4 border-r-2 border-white flex flex-col px-4">
+            <div className="w-full h-1/2 rounded-lg bg-white overflow-scroll flex flex-col my-4 gap-2 text-center px-4">
+              <h2 className="font-semibold text-gray-500 text-2xl border-b-2">
+                Absent
+              </h2>
+              {absentStudents}
+            </div>
+            <div className="w-full h-1/2 rounded-lg bg-white overflow-scroll flex flex-col my-4 gap-2 text-center px-4">
+              <h2 className="font-semibold text-gray-500 text-2xl border-b-2">
+                Present
+              </h2>
+              {presentStudents}
+            </div>
           </div>
-          <div className="flex gap-2">
-            <h3 className="font-semibold text-gray-500 text-2xl">Absent</h3>
-            <h3 className="font-semibold text-gray-500 text-2xl text-white">
-              {absentCnt}
-            </h3>
+          <div className="my-6 w-3/4 mx-auto flex flex-col gap-4 px-6">
+            {renderedStudents}
           </div>
-        </div>
-        <div className="my-6 w-3/4 mx-auto flex flex-col gap-4">
-          {renderedStudents}
         </div>
       </div>
     );
