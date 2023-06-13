@@ -5,6 +5,7 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 const session = require("express-session");
+const ExpressError = require("./utils/expressError");
 const MongoStore = require("connect-mongo");
 app.use(cors());
 app.use(bodyParser());
@@ -73,6 +74,18 @@ app.get("/", (req, res) => {
 app.get("/home", (req, res) => {
 	res.send("Home Page");
 });
+
+app.all('*', (req, res, next) => {
+	next(new ExpressError('Page not found', 404));
+})
+
+app.use((err, req, res, next) => {
+	const { statusCode = 500 } = err;
+	if (!err.message) {
+		err.message = 'Something went wrong';
+	}
+	res.status(statusCode).render('error', { err });
+})
 
 app.listen(3000, () => {
 	console.log("Serving on port 3000");

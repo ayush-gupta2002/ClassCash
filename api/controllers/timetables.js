@@ -3,6 +3,7 @@ const Teacher = require("../models/teacher");
 const Attendance = require("../models/attendance");
 const Student = require("../models/student");
 const Timetable = require("../models/timeTable");
+const User = require("../models/user");
 
 const index = async (req, res) => {
     const timetables = await Timetable.find({});
@@ -36,6 +37,19 @@ const update = async (req, res) => {
     const { batch, slots } = req.body;
 
     try {
+        const foundUser = await User.findById(req.user.id);
+        if (!foundUser) {
+            return res.status(401).send(req.user.id);
+        }
+        if (foundUser.teacherId) {
+            return res.status(401).json(foundUser);
+        }
+        if (foundUser.studentId) {
+            const foundStudent = await Student.findById(foundUser.studentId);
+            if (!foundStudent || !foundStudent.isCR) {
+                return res.status(401).send('Not authorized');
+            }
+        }
         const foundBatch = await Batch.findOne({ name: batch });
         const timetable = await Timetable.findById(id);
         timetable.batchId = foundBatch._id;
