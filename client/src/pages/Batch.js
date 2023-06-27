@@ -14,6 +14,7 @@ function Batch() {
   const [students, setStudents] = useState([]);
   const batchID = window.location.pathname.split("/")[2];
   const user = useSelector((state) => state.currentUser);
+  const teacher = useSelector((state) => state.teacher);
   useEffect(() => {
     const getBatch = async () => {
       try {
@@ -27,13 +28,16 @@ function Batch() {
     getBatch();
   }, []);
 
-  console.log(students);
+  console.log(user.accessToken);
+
+  const data = { batch: batchID, teacher: teacher._id };
 
   useEffect(() => {
     const getAttendance = async () => {
       try {
         const res = await axios.get(
           `http://localhost:3000/teachers/attendance/${batchID}`,
+          data,
           { headers: { token: `Bearer ${user.accessToken}` } }
         );
         setRecords(res.data);

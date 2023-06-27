@@ -41,6 +41,7 @@ const TeacherSchema = new Schema({
       ref: "Batch",
     },
   ],
+  subject: { type: String },
 });
 
 TeacherSchema.virtual("fullName").get(function () {

@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import StudentInAttendance from "../components/StudentInAttendance";
+import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function compare(a, b) {
   if (a.firstName + a.lastName < b.firstName + b.lastName) {
@@ -13,12 +16,16 @@ function compare(a, b) {
 }
 
 function AddAttendance() {
+  const navigate = useNavigate();
   const [batch, setBatch] = useState({});
   const [absent, setAbsent] = useState([]);
   const [present, setPresent] = useState([]);
   const batchID = window.location.pathname.split("/")[2];
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([...absent, ...present]);
+  const [date, setDate] = useState(null);
+  const teacher = useSelector((state) => state.teacher);
+  const user = useSelector((state) => state.currentUser);
 
   useEffect(() => {
     const getBatch = async () => {
@@ -41,19 +48,38 @@ function AddAttendance() {
     setLoading(false);
   }, [present, absent]);
 
-  console.log(absent, present);
+  const handleSubmit = async () => {
+    let presentIds = present.map((s) => s._id);
+    let absentIds = absent.map((s) => s._id);
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/teachers/attendance",
+        {
+          batch: batchID,
+          present: presentIds,
+          absent: absentIds,
+          date: date,
+          teacher: teacher,
+        },
+        { headers: { token: `Bearer ${user.accessToken}` } }
+      );
+      navigate("/teacherprofile");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  const absentStudents = absent.map((ab) => {
+  const absentStudents = absent.map((ab, index) => {
     return (
-      <h3 className="font-semibold text-lg">
+      <h3 className="font-semibold text-lg" key={index}>
         {ab.firstName + " " + ab.lastName}
       </h3>
     );
   });
 
-  const presentStudents = present.map((pr) => {
+  const presentStudents = present.map((pr, index) => {
     return (
-      <h3 className="font-semibold text-lg">
+      <h3 className="font-semibold text-lg" key={index}>
         {pr.firstName + " " + pr.lastName}
       </h3>
     );
@@ -61,7 +87,7 @@ function AddAttendance() {
 
   let renderedStudents = <div></div>;
   if (students) {
-    renderedStudents = students.map((stu) => {
+    renderedStudents = students.map((stu, index) => {
       return (
         <StudentInAttendance
           stu={stu}
@@ -71,6 +97,7 @@ function AddAttendance() {
           setPresent={setPresent}
           students={students}
           setStudents={setStudents}
+          key={index}
         ></StudentInAttendance>
       );
     });
@@ -83,6 +110,18 @@ function AddAttendance() {
         <h1 className="text-white font-semibold text-4xl w-full text-center py-2 border-b-2 border-white">
           {batch.name}
         </h1>
+        <div className="flex w-1/2 justify-center my-4 mx-auto">
+          <input
+            type="date"
+            className="px-4 py-2 cursor-pointer rounded-lg text-xl font-semibold text-gray-500 focus:outline-none"
+            onChange={(e) => {
+              setDate(e.target.value);
+            }}
+          ></input>
+          <Button rounded handleClick={handleSubmit}>
+            Submit
+          </Button>
+        </div>
         <div className="flex w-full h-full">
           <div className="w-1/4 border-r-2 border-white flex flex-col px-4">
             <div className="w-full h-1/2 rounded-lg bg-white overflow-scroll flex flex-col my-4 gap-2 text-center px-4">
