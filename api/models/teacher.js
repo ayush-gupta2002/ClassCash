@@ -35,13 +35,16 @@ const TeacherSchema = new Schema({
     ],
     required: true,
   },
-  batches: [
-    {
+  batches: [{
+    batch: {
       type: Schema.Types.ObjectId,
       ref: "Batch",
     },
-  ],
-  subject: { type: String },
+    subject: {
+      type: Schema.Types.ObjectId,
+      ref: "Subject",
+    }
+  }],
 });
 
 TeacherSchema.virtual("fullName").get(function () {

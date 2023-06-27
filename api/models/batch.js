@@ -18,7 +18,10 @@ const batchSchema = new Schema({
   teachers: {
     type: [
       {
-        subject: String,
+        subject: {
+          type: Schema.Types.ObjectId,
+          ref: "Subject",
+        },
         teacher: {
           type: Schema.Types.ObjectId,
           ref: "Teacher",

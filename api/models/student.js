@@ -54,6 +54,7 @@ const StudentSchema = new Schema({
   },
   batch: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: "Batch",
     required: true,
   },
   isCR: {

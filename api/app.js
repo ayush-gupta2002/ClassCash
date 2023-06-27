@@ -84,7 +84,7 @@ app.use((err, req, res, next) => {
 	if (!err.message) {
 		err.message = 'Something went wrong';
 	}
-	res.status(statusCode).render('error', { err });
+	res.status(statusCode).send(err);
 })
 
 app.listen(3000, () => {

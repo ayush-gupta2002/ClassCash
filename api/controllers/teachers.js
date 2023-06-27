@@ -2,6 +2,7 @@ const Batch = require("../models/batch");
 const Teacher = require("../models/teacher");
 const Attendance = require("../models/attendance");
 const Student = require("../models/student");
+const Subject = require("../models/subject");
 
 const index = async (req, res) => {
   const teachers = await Teacher.find({});
@@ -16,23 +17,25 @@ const register = async (req, res) => {
   newTeacher.branch = req.body.info.branch;
   newTeacher.email = req.body.info.email;
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < req.body.batchesInfo.length; i++) {
     try {
-      const foundBatch = await Batch.findOne({ name: req.body.batchesInfo[i] });
-      newTeacher.batches.push(foundBatch);
-      foundBatch.teachers.push(newTeacher._id);
+      const foundBatch = await Batch.findOne({ name: req.body.batchesInfo[i].batch });
+      const foundSubject = await Subject.findOne({ name: req.body.batchesInfo[i].subject });
+      newTeacher.batches.push({ batch: foundBatch._id, subject: foundSubject._id });
+      foundBatch.teachers.push({ subject: foundSubject._id, teacher: newTeacher._id });
       await foundBatch.save();
     } catch (err) {
-      res.status(500).json("Batch could not be found");
+      return res.status(500).json(err);
     }
   }
 
   console.log(newTeacher);
   try {
-    const res = await newTeacher.save();
-    res.status(201).json(newTeacher);
+    await newTeacher.save();
+    console.log("teacher created");
+    return res.status(201).json(newTeacher);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 };
 
