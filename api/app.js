@@ -17,6 +17,7 @@ const teacherRoutes = require("./routes/teacherRoutes");
 const batchRoutes = require("./routes/batchRoutes");
 const userRoutes = require("./routes/userRoutes");
 const timetableRoutes = require("./routes/timetableRoutes");
+const subjectRoutes = require('./routes/subjectRoutes');
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const { verifyTokenAndTeacher } = require("./routes/verifyToken");
@@ -65,6 +66,7 @@ app.use("/students", studentRoutes);
 app.use("/teachers", teacherRoutes);
 app.use("/batches", batchRoutes);
 app.use("/timetables", timetableRoutes);
+app.use("/subjects", subjectRoutes);
 app.use("/", userRoutes);
 
 app.get("/", (req, res) => {

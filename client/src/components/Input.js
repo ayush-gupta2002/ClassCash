@@ -1,5 +1,5 @@
 import React from "react";
-import { useFormContext } from "react-hook-form";
+// import { useFormContext } from "react-hook-form";
 
 function Input({ type, label, min, max, name }) {
   let minVal, maxVal;

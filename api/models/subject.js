@@ -9,11 +9,7 @@ const subjectSchema = new Schema({
 		type: String,
 		required: true,
 		unique: true
-	},
-	teachers: [{
-		type: Schema.Types.ObjectId,
-		ref: "Teacher"
-	}]
+	}
 });
 
 const Subject = model("Subject", subjectSchema);

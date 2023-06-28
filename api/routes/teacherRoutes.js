@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// const passport = require("passport");
 const catchAsync = require("../utils/catchAsync");
 const teacher = require("../controllers/teachers");
 const { verifyTokenAndTeacher } = require("../routes/verifyToken");
