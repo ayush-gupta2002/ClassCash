@@ -127,6 +127,11 @@ const createAttendance = async (req, res) => {
         try {
           let foundStudent = await Student.findById(student);
           foundStudent.coins -= 10;
+          foundStudent.transactions.push({ coins: -10, source: newAttendance._id });
+
+          if (foundStudent.transactions.length > 10) {
+            foundStudent.transactions.splice(0, 1);
+          }
           await foundStudent.save();
         } catch (e) {
           console.log(e);
@@ -138,6 +143,11 @@ const createAttendance = async (req, res) => {
         try {
           let foundStudent = await Student.findById(student);
           foundStudent.coins += 20;
+          foundStudent.transactions.push({ coins: 20, source: newAttendance._id });
+
+          if (foundStudent.transactions.length > 10) {
+            foundStudent.transactions.splice(0, 1);
+          }
           await foundStudent.save();
         } catch (e) {
           console.log(e);

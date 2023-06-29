@@ -66,7 +66,24 @@ const StudentSchema = new Schema({
     type: Number,
     default: 0,
   },
+  transactions: {
+    type: [{
+      coins: {
+        type: Number,
+        required: true
+      },
+      source: {
+        type: Schema.Types.ObjectId,
+        required: true
+      }
+    }],
+    validate: [arrayLimit, 'Size limit exceeded']
+  }
 });
+
+function arrayLimit(val) {
+  return val <= 10;
+}
 
 StudentSchema.virtual("fullName").get(function () {
   if (this.middleName) {
