@@ -45,7 +45,8 @@ const StudentSchema = new Schema({
     required: true,
   },
   courses: {
-    type: [String],
+    type: [Schema.Types.ObjectId],
+    ref: "Subject",
     required: true,
   },
   semester: {

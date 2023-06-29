@@ -1,11 +1,11 @@
 const { Schema, model } = require("mongoose");
 
 const compulsoryCourseSchema = new Schema({
-  courses: [
-    {
-      type: String,
-      required: true,
-    },
+  courses: [{
+    type: Schema.Types.ObjectId,
+    ref: "Subject",
+    required: true,
+  },
   ],
   sem: {
     type: Number,
