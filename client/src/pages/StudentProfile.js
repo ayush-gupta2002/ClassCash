@@ -5,6 +5,7 @@ import { AiFillGithub } from "react-icons/ai";
 import FieldValue from "../components/FieldValue";
 import CourseSummary from "../components/CourseSummary";
 import Button from "../components/Button";
+import { Link } from "react-router-dom";
 
 function StudentProfile() {
   return (
@@ -47,7 +48,11 @@ function StudentProfile() {
               src="https://cdn.britannica.com/17/155017-050-9AC96FC8/Example-QR-code.jpg"
             ></img>
             <div className="h-fit flex flex-col my-auto gap-2">
-              <Button rounded>Pay</Button>
+              <Button rounded>
+                <Link to="/qrcodescanning" className="w-full h-full">
+                  Pay
+                </Link>
+              </Button>
               <Button rounded>All Transactions</Button>
             </div>
           </div>

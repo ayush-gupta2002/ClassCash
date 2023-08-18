@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import TeacherProfile from "./pages/TeacherProfile";
 import Batch from "./pages/Batch";
 import AddAttendance from "./pages/AddAttendance";
+import QRCodePage from "./pages/QRCodePage";
 
 function App() {
   const user = useSelector((state) => state.currentUser);
@@ -21,6 +22,7 @@ function App() {
     { path: "/teacherprofile", element: <TeacherProfile></TeacherProfile> },
     { path: "/batch/:id", element: <Batch></Batch> },
     { path: "/addattendance/:id", element: <AddAttendance></AddAttendance> },
+    { path: "/qrcodescanning", element: <QRCodePage></QRCodePage> },
   ];
   const renderedRoutes = routes.map((r) => {
     if (user) {
