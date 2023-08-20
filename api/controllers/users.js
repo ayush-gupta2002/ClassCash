@@ -57,12 +57,12 @@ const loginUser = async (req, res, next) => {
   res.status(201).json(loggedInUser);
 };
 
-const logoutUser = (req, res, next) => {
+const logoutUser = (req, res) => {
   req.logout(function (err) {
     if (err) {
-      return next(err);
+      return res.status(400).json({ error: true });
     }
-    res.redirect("/home");
+    return res.status(201).json({ success: true });
   });
 };
 

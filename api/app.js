@@ -12,83 +12,91 @@ app.use(bodyParser());
 
 mongoose.set("strictQuery", false);
 const User = require("./models/user");
+const Outlet = require("./models/outlet");
 const studentRoutes = require("./routes/studentRoutes");
 const teacherRoutes = require("./routes/teacherRoutes");
 const batchRoutes = require("./routes/batchRoutes");
 const userRoutes = require("./routes/userRoutes");
 const timetableRoutes = require("./routes/timetableRoutes");
-const subjectRoutes = require('./routes/subjectRoutes');
+const subjectRoutes = require("./routes/subjectRoutes");
+const outletRoutes = require("./routes/outletRoutes");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const { verifyTokenAndTeacher } = require("./routes/verifyToken");
 
 const store = MongoStore.create({
-	mongoUrl: process.env.MONGODB_URI,
-	secret: process.env.SECRET,
-	touchAfter: 24 * 60 * 60,
+  mongoUrl: process.env.MONGODB_URI,
+  secret: process.env.SECRET,
+  touchAfter: 24 * 60 * 60,
 });
 
 store.on("error", function (e) {
-	console.log("SESSION STORE ERROR", e);
+  console.log("SESSION STORE ERROR", e);
 });
 const sessionConfig = {
-	store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
-	name: "session",
-	secret: process.env.SECRET,
-	resave: false,
-	saveUninitialized: true,
-	cookie: {
-		httpOnly: true,
-		expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-		maxAge: 1000 * 60 * 60 * 24 * 7,
-	},
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+  name: "session",
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
 };
 
 mongoose
-	.connect(process.env.MONGODB_URI)
-	.then(() => {
-		console.log("DB Connection Successful");
-	})
-	.catch((err) => {
-		console.log(err);
-	});
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("DB Connection Successful");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(
-	new LocalStrategy({ usernameField: "email" }, User.authenticate())
+  new LocalStrategy({ usernameField: "email" }, User.authenticate())
+);
+passport.use(
+  new LocalStrategy({ usernameField: "username" }, Outlet.authenticate())
 );
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(Outlet.serializeUser());
+passport.deserializeUser(Outlet.serializeUser());
 
 app.use("/students", studentRoutes);
 app.use("/teachers", teacherRoutes);
 app.use("/batches", batchRoutes);
 app.use("/timetables", timetableRoutes);
 app.use("/subjects", subjectRoutes);
+app.use("/outlets", outletRoutes);
 app.use("/", userRoutes);
 
 app.get("/", (req, res) => {
-	res.send("User not found");
+  res.send("User not found");
 });
 
 app.get("/home", (req, res) => {
-	res.send("Home Page");
+  res.send("Home Page");
 });
 
-app.all('*', (req, res, next) => {
-	next(new ExpressError('Page not found', 404));
-})
+// app.all("*", (req, res, next) => {
+//   next(new ExpressError("Page not found", 404));
+// });
 
-app.use((err, req, res, next) => {
-	const { statusCode = 500 } = err;
-	if (!err.message) {
-		err.message = 'Something went wrong';
-	}
-	res.status(statusCode).send(err);
-})
+// app.use((err, req, res, next) => {
+//   const { statusCode = 500 } = err;
+//   if (!err.message) {
+//     err.message = "Something went wrong";
+//   }
+//   res.status(statusCode).send(err);
+// });
 
 app.listen(3000, () => {
-	console.log("Serving on port 3000");
+  console.log("Serving on port 3000");
 });

@@ -1,6 +1,22 @@
 import axios from "axios";
 
-import { loginFailure, loginStart, loginSuccess } from "./userRedux";
+import {
+  loginFailure,
+  loginStart,
+  loginSuccess,
+  logoutStart,
+  logoutFailure,
+  logoutSuccess,
+} from "./userRedux";
+
+import {
+  OutletLoginStart,
+  OutletLoginSuccess,
+  OutletLoginFailure,
+  OutletLogoutSuccess,
+  OutletLogoutStart,
+  OutletLogoutFailure,
+} from "./outletRedux";
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
@@ -42,5 +58,41 @@ export const login = async (dispatch, user) => {
 
   if (!isError) {
     dispatch(loginSuccess({ user: foundUser, student, teacher }));
+  }
+};
+
+export const logout = async (dispatch, user, outlet) => {
+  dispatch(logoutStart());
+
+  try {
+    await axios.get("http://localhost:3000/logout", {
+      headers: { token: `Bearer ${user.currentUser.accessToken}` },
+    });
+    dispatch(logoutSuccess());
+  } catch (err) {
+    dispatch(logoutFailure());
+  }
+  try {
+    await axios.get("http://localhost:3000/outlets/logout", {
+      headers: { token: `Bearer ${outlet.currentOutlet.accessToken}` },
+    });
+    dispatch(OutletLogoutSuccess());
+  } catch (err) {
+    console.log(err);
+    dispatch(OutletLogoutFailure());
+  }
+};
+
+export const outletLogin = async (dispatch, outlet) => {
+  dispatch(OutletLoginStart());
+  try {
+    const res = await axios.post("http://localhost:3000/outlets/login", {
+      username: outlet.name,
+      password: outlet.password,
+    });
+    console.log(res.data);
+    dispatch(OutletLoginSuccess({ outlet: res.data._doc }));
+  } catch (err) {
+    dispatch(OutletLoginFailure());
   }
 };

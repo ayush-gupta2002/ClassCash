@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import Footer from "../components/Footer";
-import { login } from "../redux/apiCalls";
+import { outletLogin } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import BrandHeader from "../components/BrandHeader";
 
-function Login() {
+function OutletLogin() {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
-  const [email, setEmail] = useState("");
+  const outlet = useSelector((state) => state.outlet);
+  console.log("outlet", outlet);
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const buttonClasses = classNames({
@@ -18,8 +19,8 @@ function Login() {
     "text-black": true,
     "font-semibold": true,
     "p-2": true,
-    "bg-black": email === "" || password === "",
-    "bg-white": email !== "" && password !== "",
+    "bg-black": name === "" || password === "",
+    "bg-white": name !== "" && password !== "",
     "duration-500": true,
     "hover:scale-105": true,
     "duration-500": true,
@@ -28,31 +29,29 @@ function Login() {
   const dispatch = useDispatch();
 
   let buttonDisabled;
-  if (email === "" || password === "") {
+  if (name === "" || password === "") {
     buttonDisabled = true;
   } else {
     buttonDisabled = false;
   }
 
-  console.log(user.currentUser);
-
   const handleLogin = async (e) => {
     e.preventDefault();
-    login(dispatch, { email: email, password: password });
-    if (user.currentUser) {
-      navigate("/home");
-    } else if (user.error && !user.isFetching) {
+    outletLogin(dispatch, { name: name, password: password });
+    if (outlet.currentOutlet) {
+      navigate("/outletprofile");
+    } else if (outlet.error && !outlet.isFetching) {
       setError("Please enter the correct credentials!");
     }
   };
 
   useEffect(() => {
-    if (user.currentUser) {
-      navigate("/home");
-    } else if (user.error && !user.isFetching) {
+    if (outlet.currentOutlet) {
+      navigate("/outletprofile");
+    } else if (outlet.error && !outlet.isFetching) {
       setError("Please enter the correct credentials!");
     }
-  }, [user.currentUser]);
+  }, [outlet.currentOutlet]);
 
   let errorContent = <div></div>;
   if (error) {
@@ -70,7 +69,7 @@ function Login() {
 
       <div className="w-full md:w-1/2 flex h-full mx-auto">
         <form
-          className="w-1/2 m-auto"
+          className="w-1/2 m-auto flex flex-col"
           onSubmit={(e) => {
             handleLogin(e);
           }}
@@ -78,16 +77,16 @@ function Login() {
           <div className="flex flex-col my-6">
             <label
               className="text-gray-400 font-semibold text-2xl mb-2"
-              htmlFor="email"
+              htmlFor="name"
             >
-              Email ID
+              Outlet Name
             </label>
             <input
               className="border-2 bg-black p-2 focus:outline-none text-gray-300"
-              id="email"
-              type="email"
+              id="name"
+              type="text"
               onChange={(e) => {
-                setEmail(e.target.value);
+                setName(e.target.value);
               }}
             ></input>
           </div>
@@ -106,19 +105,19 @@ function Login() {
                 setPassword(e.target.value);
               }}
             ></input>
-            <Link
-              to="/outletlogin"
-              className="font-semibold text-white text-xl mx-auto my-4 hover:underline cursor-pointer"
-            >
-              Are you an outlet? Login here
-            </Link>
-            <Link
-              to="/register"
-              className="font-semibold text-white text-xl mx-auto mb-2 hover:underline cursor-pointer"
-            >
-              New Here? Register here
-            </Link>
           </div>
+          <Link
+            to="/login"
+            className="font-semibold text-white text-xl mx-auto mb-2 hover:underline cursor-pointer"
+          >
+            Are you a Student or a Teacher? Login here
+          </Link>
+          <Link
+            to="/register"
+            className="font-semibold text-white text-xl mx-auto mb-2 hover:underline cursor-pointer"
+          >
+            New Here? Register here
+          </Link>
           <button disabled={buttonDisabled} className={buttonClasses}>
             Login
           </button>
@@ -129,4 +128,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default OutletLogin;

@@ -5,6 +5,9 @@ import classNames from "classnames";
 import StudentRegForm from "../components/StudentRegForm";
 import TeacherRegForm from "../components/TeacherRegForm";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import BrandHeader from "../components/BrandHeader";
+import Footer from "../components/Footer";
 
 function Register() {
   const [visibleForm, setVisibleForm] = useState("Student");
@@ -57,7 +60,10 @@ function Register() {
   }
 
   return (
-    <div className="max-h-screen my-10 bg-black">
+    <div className="max-h-screen my-10 bg-black flex flex-col">
+      <div className="w-fit mx-auto">
+        <BrandHeader></BrandHeader>
+      </div>
       <div className="w-full flex my-6">
         <div className="flex w-fit mx-auto gap-4">
           <div
@@ -81,6 +87,21 @@ function Register() {
         </div>
       </div>
       <div className="flex">{content}</div>
+      <div className="w-full flex flex-col">
+        <Link
+          className="text-white mx-auto font-bold text-xl my-4 hover:underline cursor-pointer hover:scale-105 duration-500"
+          to="/outletregister"
+        >
+          Are you an outlet? Register here.
+        </Link>
+        <Link
+          className="text-white mx-auto font-bold text-xl my-4 hover:underline cursor-pointer hover:scale-105 duration-500"
+          to="/login"
+        >
+          Already have an account? Login here
+        </Link>
+      </div>
+      <Footer></Footer>
     </div>
   );
 }

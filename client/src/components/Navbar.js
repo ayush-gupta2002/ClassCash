@@ -1,8 +1,21 @@
 import React from "react";
 import Button from "./Button";
 import { BiCoinStack } from "react-icons/bi";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../redux/apiCalls";
 
 function Navbar() {
+  const user = useSelector((state) => state.user);
+  const outlet = useSelector((state) => state.outlet);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout(dispatch, user, outlet);
+    navigate("/login");
+  };
+
   return (
     <div className="w-full h-fit text-white flex justify-end py-2 px-2">
       <div className="w-1/2 flex justify-between">
@@ -17,7 +30,9 @@ function Navbar() {
           </div>
         </div>
         <div className="w-1/2 flex justify-end">
-          <Button rounded>Logout</Button>
+          <Button handleClick={handleLogout} rounded>
+            Logout
+          </Button>
         </div>
       </div>
     </div>
