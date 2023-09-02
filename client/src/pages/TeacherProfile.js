@@ -7,11 +7,12 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 function TeacherProfile() {
-  const teacher = useSelector((state) => state.teacher);
+  const teacher = useSelector((state) => state.user.teacher);
   const renderedBatches = teacher.batches.map((batch) => {
+    console.log(batch);
     return (
-      <Link to={`/batch/${batch}`}>
-        <Batch batchID={batch}></Batch>
+      <Link to={`/batch/${batch.batch}`}>
+        <Batch batchID={batch.batch}></Batch>
       </Link>
     );
   });

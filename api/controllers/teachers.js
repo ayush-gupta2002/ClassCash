@@ -19,10 +19,20 @@ const register = async (req, res) => {
 
   for (let i = 0; i < req.body.batchesInfo.length; i++) {
     try {
-      const foundBatch = await Batch.findOne({ name: req.body.batchesInfo[i].batch });
-      const foundSubject = await Subject.findOne({ name: req.body.batchesInfo[i].subject });
-      newTeacher.batches.push({ batch: foundBatch._id, subject: foundSubject._id });
-      foundBatch.teachers.push({ subject: foundSubject._id, teacher: newTeacher._id });
+      const foundBatch = await Batch.findOne({
+        name: req.body.batchesInfo[i].batch,
+      });
+      const foundSubject = await Subject.findOne({
+        name: req.body.batchesInfo[i].subject,
+      });
+      newTeacher.batches.push({
+        batch: foundBatch._id,
+        subject: foundSubject._id,
+      });
+      foundBatch.teachers.push({
+        subject: foundSubject._id,
+        teacher: newTeacher._id,
+      });
       await foundBatch.save();
     } catch (err) {
       return res.status(500).json(err);
@@ -42,6 +52,7 @@ const register = async (req, res) => {
 const show = async (req, res) => {
   const { id } = req.params;
   const teacher = await Teacher.findById(id);
+  console.log(teacher);
   if (!teacher) {
     return res.status(404);
   }
@@ -93,22 +104,21 @@ const createAttendance = async (req, res) => {
   try {
     const foundBatch = await Batch.findById(batch);
     const foundTeacher = await Teacher.findById(teacher._id);
-    let subject = null;
-
+    let foundSubject = false;
     for (let t of foundBatch.teachers) {
-      if (String(t._id) === String(foundTeacher._id)) {
-        subject = foundTeacher.subject;
+      if (String(t.teacher) == String(foundTeacher._id)) {
+        console.log(foundTeacher);
+        foundSubject = true;
         break;
       }
     }
 
-    if (subject === null) {
+    if (!foundSubject) {
       console.log("Teacher is not authorized");
     }
-    let flag = false;
 
     const isValid = foundTeacher.batches.find(
-      (b) => String(b) === String(foundBatch._id)
+      (b) => String(b.batch) === String(foundBatch._id)
     );
 
     if (!isValid) {
@@ -120,40 +130,46 @@ const createAttendance = async (req, res) => {
         batch: foundBatch._id,
         absent: absent,
         present: present,
-        subject: subject,
+        subject: "Basic Electrical Engineering",
       });
 
-      for (let student of absent) {
-        try {
-          let foundStudent = await Student.findById(student);
-          foundStudent.coins -= 10;
-          foundStudent.transactions.push({ coins: -10, source: newAttendance._id });
+      // for (let student of absent) {
+      //   try {
+      //     let foundStudent = await Student.findById(student);
+      //     foundStudent.coins -= 10;
+      //     foundStudent.transactions.push({
+      //       coins: -10,
+      //       source: newAttendance._id,
+      //     });
 
-          if (foundStudent.transactions.length > 10) {
-            foundStudent.transactions.splice(0, 1);
-          }
-          await foundStudent.save();
-        } catch (e) {
-          console.log(e);
-          res.status(500).json(e);
-        }
-      }
+      //     if (foundStudent.transactions.length > 10) {
+      //       foundStudent.transactions.splice(0, 1);
+      //     }
+      //     await foundStudent.save();
+      //   } catch (e) {
+      //     console.log(e);
+      //     // res.status(500).json(e);
+      //   }
+      // }
 
-      for (let student of present) {
-        try {
-          let foundStudent = await Student.findById(student);
-          foundStudent.coins += 20;
-          foundStudent.transactions.push({ coins: 20, source: newAttendance._id });
+      // for (let student of present) {
+      //   try {
+      //     let foundStudent = await Student.findById(student);
+      //     foundStudent.coins += 20;
+      //     foundStudent.transactions.push({
+      //       coins: 20,
+      //       source: newAttendance._id,
+      //     });
 
-          if (foundStudent.transactions.length > 10) {
-            foundStudent.transactions.splice(0, 1);
-          }
-          await foundStudent.save();
-        } catch (e) {
-          console.log(e);
-          res.status(500).json(e);
-        }
-      }
+      //     if (foundStudent.transactions.length > 10) {
+      //       foundStudent.transactions.splice(0, 1);
+      //     }
+      //     await foundStudent.save();
+      //   } catch (e) {
+      //     console.log(e);
+      //     // res.status(500).json(e);
+      //   }
+      // }
 
       await newAttendance.save();
       console.log(newAttendance);

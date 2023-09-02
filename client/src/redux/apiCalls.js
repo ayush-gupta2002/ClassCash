@@ -50,6 +50,7 @@ export const login = async (dispatch, user) => {
         `http://localhost:3000/teachers/${foundUser._doc.teacherId}`
       );
       teacher = res.data;
+      console.log(teacher);
     } catch (err) {
       isError = true;
       dispatch(loginFailure());

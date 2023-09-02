@@ -9,6 +9,7 @@ function Batch({ batchID }) {
   useEffect(() => {
     const getBatch = async () => {
       try {
+        console.log("batchID", batchID);
         const res = await axios.get(`http://localhost:3000/batches/${batchID}`);
         setBatch(res.data);
         setIsLoading(false);
@@ -17,6 +18,7 @@ function Batch({ batchID }) {
       }
     };
     getBatch();
+    console.log(batch);
   }, []);
 
   let content = <div className="m-auto spinner"></div>;

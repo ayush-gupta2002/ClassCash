@@ -6,7 +6,7 @@ const passport = require("passport");
 
 router.route("/").post(catchAsync(outlet.create));
 
-router.post("/login", passport.authenticate("local"), outlet.login);
+router.post("/login", passport.authenticate("outlet"), outlet.login);
 
 router.get("/logout", outlet.logout);
 

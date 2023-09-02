@@ -59,11 +59,13 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(
+  "user",
   new LocalStrategy({ usernameField: "email" }, User.authenticate())
 );
-passport.use(
-  new LocalStrategy({ usernameField: "username" }, Outlet.authenticate())
-);
+// passport.use(
+//   "outlet",
+//   new LocalStrategy({ usernameField: "username" }, Outlet.authenticate())
+// );
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 passport.serializeUser(Outlet.serializeUser());

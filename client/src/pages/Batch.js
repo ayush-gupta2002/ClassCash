@@ -13,8 +13,8 @@ function Batch() {
   const [records, setRecords] = useState([]);
   const [students, setStudents] = useState([]);
   const batchID = window.location.pathname.split("/")[2];
-  const user = useSelector((state) => state.currentUser);
-  const teacher = useSelector((state) => state.teacher);
+  const user = useSelector((state) => state.user.currentUser);
+  const teacher = useSelector((state) => state.user.teacher);
   useEffect(() => {
     const getBatch = async () => {
       try {

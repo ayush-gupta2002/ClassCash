@@ -17,6 +17,7 @@ const create = async (req, res) => {
 
 const show = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   const batch = await Batch.findById(id)
     .populate("students")
     .populate({

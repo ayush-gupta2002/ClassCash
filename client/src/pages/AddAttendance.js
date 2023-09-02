@@ -25,8 +25,8 @@ function AddAttendance() {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([...absent, ...present]);
   const [date, setDate] = useState(null);
-  const teacher = useSelector((state) => state.teacher);
-  const user = useSelector((state) => state.currentUser);
+  const teacher = useSelector((state) => state.user.teacher);
+  const user = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     const getBatch = async () => {

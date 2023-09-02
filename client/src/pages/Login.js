@@ -34,21 +34,18 @@ function Login() {
     buttonDisabled = false;
   }
 
-  console.log(user.currentUser);
-
   const handleLogin = async (e) => {
     e.preventDefault();
     login(dispatch, { email: email, password: password });
-    if (user.currentUser) {
-      navigate("/home");
-    } else if (user.error && !user.isFetching) {
-      setError("Please enter the correct credentials!");
-    }
   };
 
   useEffect(() => {
     if (user.currentUser) {
-      navigate("/home");
+      if (user.teacher) {
+        navigate("/teacherprofile");
+      } else {
+        navigate("/home");
+      }
     } else if (user.error && !user.isFetching) {
       setError("Please enter the correct credentials!");
     }

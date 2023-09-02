@@ -8,7 +8,7 @@ const user = require("../controllers/users");
 
 router.route("/register").post(catchAsync(user.registerUser));
 
-router.post("/login", passport.authenticate("local"), user.loginUser);
+router.post("/login", passport.authenticate("user"), user.loginUser);
 
 router.get("/logout", user.logoutUser);
 
