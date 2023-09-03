@@ -82,7 +82,7 @@ const allAttendance = async (req, res) => {
 
 const batchAttendance = async (req, res) => {
   const { batchId, teacherId } = req.params;
-  console.log("rwquest recieved");
+  console.log("request recieved", teacherId, batchId);
 
   try {
     const foundRecords = await Attendance.find({
@@ -107,7 +107,6 @@ const createAttendance = async (req, res) => {
     let foundSubject = false;
     for (let t of foundBatch.teachers) {
       if (String(t.teacher) == String(foundTeacher._id)) {
-        console.log(foundTeacher);
         foundSubject = true;
         break;
       }
@@ -133,43 +132,43 @@ const createAttendance = async (req, res) => {
         subject: "Basic Electrical Engineering",
       });
 
-      // for (let student of absent) {
-      //   try {
-      //     let foundStudent = await Student.findById(student);
-      //     foundStudent.coins -= 10;
-      //     foundStudent.transactions.push({
-      //       coins: -10,
-      //       source: newAttendance._id,
-      //     });
+      for (let student of absent) {
+        try {
+          let foundStudent = await Student.findById(student);
+          foundStudent.coins -= 10;
+          foundStudent.transactions.push({
+            coins: -10,
+            source: newAttendance._id,
+          });
 
-      //     if (foundStudent.transactions.length > 10) {
-      //       foundStudent.transactions.splice(0, 1);
-      //     }
-      //     await foundStudent.save();
-      //   } catch (e) {
-      //     console.log(e);
-      //     // res.status(500).json(e);
-      //   }
-      // }
+          if (foundStudent.transactions.length > 10) {
+            foundStudent.transactions.splice(0, 1);
+          }
+          await foundStudent.save();
+        } catch (e) {
+          console.log(e);
+          // res.status(500).json(e);
+        }
+      }
 
-      // for (let student of present) {
-      //   try {
-      //     let foundStudent = await Student.findById(student);
-      //     foundStudent.coins += 20;
-      //     foundStudent.transactions.push({
-      //       coins: 20,
-      //       source: newAttendance._id,
-      //     });
+      for (let student of present) {
+        try {
+          let foundStudent = await Student.findById(student);
+          foundStudent.coins += 20;
+          foundStudent.transactions.push({
+            coins: 20,
+            source: newAttendance._id,
+          });
 
-      //     if (foundStudent.transactions.length > 10) {
-      //       foundStudent.transactions.splice(0, 1);
-      //     }
-      //     await foundStudent.save();
-      //   } catch (e) {
-      //     console.log(e);
-      //     // res.status(500).json(e);
-      //   }
-      // }
+          if (foundStudent.transactions.length > 10) {
+            foundStudent.transactions.splice(0, 1);
+          }
+          await foundStudent.save();
+        } catch (e) {
+          console.log(e);
+          // res.status(500).json(e);
+        }
+      }
 
       await newAttendance.save();
       console.log(newAttendance);

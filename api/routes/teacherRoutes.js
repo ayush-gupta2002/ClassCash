@@ -17,8 +17,8 @@ router
 
 //specific to a particular batch
 router
-  .route("/attendance/:batchId")
-  .get(verifyTokenAndTeacher, catchAsync(teacher.batchAttendance));
+  .route("/attendance/:batchId/:teacherId")
+  .get(catchAsync(teacher.batchAttendance));
 
 //generic routes
 router

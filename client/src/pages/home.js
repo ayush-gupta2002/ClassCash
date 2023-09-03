@@ -4,8 +4,10 @@ import Navbar from "../components/Navbar";
 import Timetable from "../components/Timetable";
 import TopPerformers from "../components/TopPerformers";
 import WeeklyStatement from "../components/WeeklyStatement";
+import { useSelector } from "react-redux";
 
 function Home() {
+  const student = useSelector((state) => state.user.student);
   return (
     <div>
       <Navbar></Navbar>
@@ -14,7 +16,7 @@ function Home() {
           <div className="w-full flex mx-auto">
             <div className="mx-auto text-center w-2/3">
               <h1 className="text-white text-2xl font-semibold">
-                Ayush's Timetable
+                {student.firstName}'s Timetable
               </h1>
               <Timetable></Timetable>
               <div className="flex gap-4 mt-12">

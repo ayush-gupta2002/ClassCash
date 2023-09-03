@@ -28,15 +28,13 @@ function Batch() {
     getBatch();
   }, []);
 
-  console.log(user.accessToken);
-
   const data = { batch: batchID, teacher: teacher._id };
 
   useEffect(() => {
     const getAttendance = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/teachers/attendance/${batchID}`,
+          `http://localhost:3000/teachers/attendance/${batchID}/${teacher._id}`,
           data,
           { headers: { token: `Bearer ${user.accessToken}` } }
         );
@@ -136,7 +134,7 @@ function Batch() {
   }
 
   return (
-    <div className="max-h-screen my-10 bg-black">
+    <div className="min-h-screen h-full my-10 bg-black">
       <div className="flex flex-col w-full h-full">
         <h1 className="text-white font-semibold text-4xl w-full text-center py-2 border-b-2 border-white">
           {foundBatch.name}

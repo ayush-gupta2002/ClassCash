@@ -45,8 +45,7 @@ const StudentSchema = new Schema({
     required: true,
   },
   courses: {
-    type: [Schema.Types.ObjectId],
-    ref: "Subject",
+    type: [String],
     required: true,
   },
   semester: {
@@ -67,18 +66,19 @@ const StudentSchema = new Schema({
     default: 0,
   },
   transactions: {
-    type: [{
-      coins: {
-        type: Number,
-        required: true
+    type: [
+      {
+        coins: {
+          type: Number,
+          required: true,
+        },
+        source: {
+          type: Schema.Types.ObjectId,
+          required: true,
+        },
       },
-      source: {
-        type: Schema.Types.ObjectId,
-        required: true
-      }
-    }],
-    validate: [arrayLimit, 'Size limit exceeded']
-  }
+    ],
+  },
 });
 
 function arrayLimit(val) {
